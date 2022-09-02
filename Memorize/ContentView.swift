@@ -11,7 +11,7 @@ import SwiftUI
 enum Themes: String, CaseIterable {
     case vehicles = "Vehicles"
     case animals = "Animals"
-    case fruits = "Fruits"
+    case flags = "Flags"
     
     /// Returns the data to be used according to theme
     func data() -> [String] {
@@ -19,18 +19,15 @@ enum Themes: String, CaseIterable {
         case .vehicles:
             return ["🦼", "🛴", "🚲", "🛵", "🏍",
                     "🛺", "🚡", "🚠", "🚅", "🚈",
-                    "🚂", "✈️", "🚀", "🛸", "🚁", "🚤"] /*
-                    "🐶", "🐱", "🐭", "🐹",
-                    "🦊", "🐻", "🐼", "🐻‍❄️",
-                    "🐯", "🦁", "🐮", "🐷"]*/
+                    "🚂", "✈️", "🚀", "🛸", "🚁", "🚤"]
         case .animals:
             return ["🐶", "🐱", "🐭", "🐹", "🐰",
                     "🦊", "🐻", "🐼", "🐻‍❄️", "🐨",
                     "🐯", "🦁", "🐮", "🐷"]
-        case .fruits:
-            return ["🍏", "🍎", "🍐", "🍊", "🍋",
-                    "🍌", "🍉", "🍇", "🍓", "🫐",
-                    "🍈", "🍒"]
+        case .flags:
+            return ["🇦🇷", "🇧🇷", "🇧🇪", "🇧🇴", "🇨🇦",
+                    "🇨🇳", "🇨🇱", "🇩🇪", "🇮🇱", "🇵🇪",
+                    "🇳🇬", "🇺🇸"]
         }
     }
     
@@ -41,9 +38,8 @@ enum Themes: String, CaseIterable {
             return "car"
         case .animals:
             return "pawprint"
-        case .fruits:
-            // Not found as a system name because of version incompatiblility. Imported directly to Assets folder
-            return "carrot"
+        case .flags:
+            return "flag"
         }
     }
 }
@@ -86,57 +82,22 @@ struct ContentView: View {
             }
             
             Spacer()
-            HStack {
-                vehicles
-                Spacer()
-                animals
-                Spacer()
-                fruits
+            HStack(alignment: .center, spacing: 70) {
+                ForEach(Themes.allCases, id: \.self) { theme in
+                    let imageName = theme.name() + (self.theme == theme ? ".fill" : "")
+                    
+                    Button(action: {
+                        self.theme = theme
+                    }, label: {
+                        VStack {
+                            Image(systemName: imageName).font(.largeTitle)
+                            Text(theme.rawValue).font(.footnote)
+                        }
+                    })
+                }
             }
-            .padding(.horizontal, 30.0)
         }
         .padding(.horizontal)
-    }
-    
-    /// View showing Vehicles Theme button
-    var vehicles: some View {
-        let imageName = Themes.vehicles.name() + (theme == .vehicles ? ".fill" : "")
-        
-        return Button(action: {
-            theme = .vehicles
-        }, label: {
-            VStack {
-                Image(systemName: imageName).font(.largeTitle)
-                Text(Themes.vehicles.rawValue).font(.footnote)
-            }
-        })
-    }
-    
-    /// View showing Animals Theme button
-    var animals: some View {
-        let imageName = Themes.animals.name() + (theme == .animals ? ".fill" : "")
-        
-        return Button(action: {
-            theme = .animals
-        }, label: {
-            VStack {
-                Image(systemName: imageName).font(.largeTitle)
-                Text(Themes.animals.rawValue).font(.footnote)
-            }
-        })
-    }
-    
-    /// View showing Fruits Theme button
-    var fruits: some View {
-        let imageName = Themes.fruits.name() + (theme == .fruits ? ".fill" : "")
-        return Button(action: {
-            theme = .fruits
-        }, label: {
-            VStack {
-                Image(imageName).font(.largeTitle)
-                Text(Themes.fruits.rawValue).font(.footnote)
-            }
-        })
     }
 }
 
