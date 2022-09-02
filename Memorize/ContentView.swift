@@ -93,18 +93,20 @@ struct ContentView: View {
                 Spacer()
                 fruits
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 30.0)
         }
         .padding(.horizontal)
     }
     
     /// View showing Vehicles Theme button
     var vehicles: some View {
-        Button(action: {
+        let imageName = Themes.vehicles.name() + (theme == .vehicles ? ".fill" : "")
+        
+        return Button(action: {
             theme = .vehicles
         }, label: {
             VStack {
-                Image(systemName: Themes.vehicles.name()).font(.largeTitle)
+                Image(systemName: imageName).font(.largeTitle)
                 Text(Themes.vehicles.rawValue).font(.footnote)
             }
         })
@@ -112,11 +114,13 @@ struct ContentView: View {
     
     /// View showing Animals Theme button
     var animals: some View {
-        Button(action: {
+        let imageName = Themes.animals.name() + (theme == .animals ? ".fill" : "")
+        
+        return Button(action: {
             theme = .animals
         }, label: {
             VStack {
-                Image(systemName: Themes.animals.name()).font(.largeTitle)
+                Image(systemName: imageName).font(.largeTitle)
                 Text(Themes.animals.rawValue).font(.footnote)
             }
         })
@@ -124,11 +128,12 @@ struct ContentView: View {
     
     /// View showing Fruits Theme button
     var fruits: some View {
-        Button(action: {
+        let imageName = Themes.fruits.name() + (theme == .fruits ? ".fill" : "")
+        return Button(action: {
             theme = .fruits
         }, label: {
             VStack {
-                Image(Themes.fruits.name()).font(.largeTitle)
+                Image(imageName).font(.largeTitle)
                 Text(Themes.fruits.rawValue).font(.footnote)
             }
         })
