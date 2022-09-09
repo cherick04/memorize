@@ -30,7 +30,7 @@ struct ContentView: View {
                 Text(viewModel.theme.rawValue)
                 Spacer()
                 Text("Score:").fontWeight(.bold)
-                Text(viewModel.score)
+                Text(viewModel.score).foregroundColor(viewModel.scoreColor)
             }
             ScrollView {
 //                LazyVGrid(columns: [GridItem(.adaptive(minimum: widthThatBestFits(cardCount: data.count)))]) {
@@ -47,7 +47,7 @@ struct ContentView: View {
             .foregroundColor(viewModel.themeColor)
             ZStack {
                 RoundedRectangle(cornerRadius: 100)
-                    .frame(height: 50)
+                    .frame(width: 150.0, height: 50)
                     .foregroundColor(.blue)
                 Button (action: {
                     viewModel.newGame()

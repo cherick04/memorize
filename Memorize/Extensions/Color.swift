@@ -32,8 +32,12 @@ extension Color {
             return .pink
         case "gray":
             return .gray
+        case "cyan":
+            return .cyan
         case "black":
             return .black
+        case "clear":
+            return .clear
         default:
             return .black
         }

@@ -67,18 +67,7 @@ enum Theme: String, CaseIterable {
         case .animalFaces: return "purple"
         case .animals: return "pink"
         case .sAmericanFlags: return "gray"
-        case .asianFlags: return "black"
+        case .asianFlags: return "green"
         }
     }
-    /// Returns the name of the theme to be used as the image name
-//    func name() -> String {
-//        switch self {
-//        case .cars:
-//            return "car"
-//        case .animals:
-//            return "pawprint"
-//        case .flags:
-//            return "flag"
-//        }
-//    }
 }

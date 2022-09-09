@@ -32,6 +32,18 @@ class EmojiMemoryGame: ObservableObject {
         String(model.score)
     }
     
+    /// `Color` is based on score
+    ///  Green if positive, red if negative, black if score is zero
+    var scoreColor: Color {
+        if model.score > 0 {
+            return .green
+        } else if model.score < 0 {
+            return .red
+        } else {
+            return .black
+        }
+    }
+    
     /// Property holds `Color` based on selected theme
     var themeColor: Color {
         Color.byName(theme.color())
