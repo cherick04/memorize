@@ -53,7 +53,7 @@ enum Theme: String, CaseIterable {
     
     ///Returns a number of card pairs
     func cardPairCount() -> Int {
-        return data().count - Int.random(in: 0...1)
+        return data().count //- Int.random(in: 0...1)
     }
     
     /// Returns the name of the color based on theme

@@ -10,14 +10,22 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
     
-//    /// Calculates the best width to fit on screen based on current screen width and height
-//    func widthThatBestFits(cardCount: Int) -> CGFloat {
-//        let count = CGFloat(cardCount)
-//        let width = UIScreen.main.bounds.width
-//        let height = UIScreen.main.bounds.height
-//
-//        return abs((height/count) - (width/count)) + ((count / 2) * 10)
-//    }
+    /// Returns the best width to fit on screen based on current screen width and height
+    private func widthThatBestFits(cardCount: Int) -> CGFloat {
+        switch cardCount {
+        case 0...4:
+            return 120
+        case 5...9:
+            return 110
+        case 10...20:
+            return 80
+        default:
+            return 60
+        }
+        
+        // Linear equation based on data
+        // return 112.753 - (1.6986 * CGFloat(cardCount))
+    }
     
     var body: some View {
         return VStack {
@@ -33,8 +41,7 @@ struct ContentView: View {
                 Text(viewModel.score).foregroundColor(viewModel.scoreColor)
             }
             ScrollView {
-//                LazyVGrid(columns: [GridItem(.adaptive(minimum: widthThatBestFits(cardCount: data.count)))]) {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 75))]) {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: widthThatBestFits(cardCount: viewModel.cards.count)))]) {
                     ForEach(viewModel.cards) { card in
                         CardView(card: card)
                             .aspectRatio(2/3, contentMode: .fit)
