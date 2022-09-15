@@ -12,6 +12,8 @@ import SwiftUI
 /// ViewModel uses `MemoryGame` model to interpret game functionality
 class EmojiMemoryGame: ObservableObject {
     
+    typealias Card = MemoryGame<String>.Card
+    
     /// Returns an instance of MemoryGame
     static func createMemoryGame(theme: Theme) -> MemoryGame<String> {
         let data = theme.data()
@@ -23,7 +25,7 @@ class EmojiMemoryGame: ObservableObject {
     private(set) var theme: Theme
     
     /// Array of all cards to be used in game
-    var cards: [MemoryGame<String>.Card] {
+    var cards: [Card] {
         model.cards
     }
     
@@ -58,7 +60,7 @@ class EmojiMemoryGame: ObservableObject {
     
     // MARK: - Intent(s)
     
-    func choose(_ card: MemoryGame<String>.Card) {
+    func choose(_ card: Card) {
         model.choose(card)
     }
     

@@ -18,7 +18,14 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     /// Dictionary holds information of the cards which have already been seen.
     /// Key is the card index. Value is a flag which indicates if the card has been previously shown or not
     private var seenCardDictionary: [Int: Bool]
-    private var facedUpCardIndex: Int?
+    private var facedUpCardIndex: Int? {
+        get {
+            cards.indices.filter({ cards[$0].isFaceUp }).oneAndOnly
+        }
+        set {
+            cards.indices.forEach { cards[$0].isFaceUp = ($0 == newValue) }
+        }
+    }
     
     // MARK: Initializer
     
@@ -42,47 +49,47 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     /// - Parameter card: Card chosen to check the logic
     mutating func choose(_ card: Card) {
         
-        /// Given an index, method checks if `seenCardDictionary` has it as a key.
-        /// If it does and it detects it's not the first time seeing it, it decreases the score.
-        /// Otherwise, it sets the value to false so next time a mismatch occurs, it will decrease the score.
-        ///
-        /// - Parameter cardIndex: card index used as a key in `seenCardDictionary`
-        func decraseScore(for cardIndex: Int) {
-            if let isFirstRun = seenCardDictionary[cardIndex] {
-                if !isFirstRun {
-                    score -= 1
-                } else {
-                    seenCardDictionary[cardIndex] = false
-                }
-            }
-        }
-        
         // Only check logic if card exists, is not faced up and has not been matched.
         if let chosenIndex = cards.firstIndex(where: { $0.id == card.id }),
            !cards[chosenIndex].isFaceUp,
            !cards[chosenIndex].isMatched
         {
             if let possibleMatchIndex = facedUpCardIndex {
-                // Match
-                if cards[possibleMatchIndex].content == cards[chosenIndex].content {
-                    cards[chosenIndex].isMatched = true
-                    cards[possibleMatchIndex].isMatched = true
-                    score += 2
-                // Mismatch
-                } else {
-                    decraseScore(for: possibleMatchIndex)
-                    decraseScore(for: chosenIndex)
-                }
-                facedUpCardIndex = nil
+                updateScore(for: possibleMatchIndex, and: chosenIndex)
+                cards[chosenIndex].isFaceUp = true
             } else {
-                for index in cards.indices {
-                    cards[index].isFaceUp = false
-                }
                 facedUpCardIndex = chosenIndex
             }
             
             seenCardDictionary[chosenIndex] = seenCardDictionary[chosenIndex] == nil
-            cards[chosenIndex].isFaceUp.toggle()
+        }
+    }
+    
+    private mutating func updateScore(for cardOneIndex: Int, and cardTwoIndex: Int) {
+        // Match
+        if cards[cardOneIndex].content == cards[cardTwoIndex].content {
+            cards[cardOneIndex].isMatched = true
+            cards[cardTwoIndex].isMatched = true
+            score += 2
+        // Mismatch
+        } else {
+            decraseScore(for: cardOneIndex)
+            decraseScore(for: cardTwoIndex)
+        }
+    }
+    
+    /// Given an index, method checks if `seenCardDictionary` has it as a key.
+    /// If it does and it detects it's not the first time seeing it, it decreases the score.
+    /// Otherwise, it sets the value to false so next time a mismatch occurs, it will decrease the score.
+    ///
+    /// - Parameter cardIndex: card index used as a key in `seenCardDictionary`
+    private mutating func decraseScore(for cardIndex: Int) {
+        guard let isFirstRun = seenCardDictionary[cardIndex] else { return }
+        
+        if !isFirstRun {
+            score -= 1
+        } else {
+            seenCardDictionary[cardIndex] = false
         }
     }
     
