@@ -17,6 +17,7 @@
 		7C4324E428C17240009D1E16 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C4324E328C17240009D1E16 /* Preview Assets.xcassets */; };
 		7CD42FD228D0E5880056DA07 /* AspectVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD42FD128D0E5880056DA07 /* AspectVGrid.swift */; };
 		7CD42FD628D3C6BE0056DA07 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD42FD528D3C6BE0056DA07 /* Array.swift */; };
+		7CD42FDC28D3CBFA0056DA07 /* Pie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD42FDB28D3CBFA0056DA07 /* Pie.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		7C4324E328C17240009D1E16 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		7CD42FD128D0E5880056DA07 /* AspectVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectVGrid.swift; sourceTree = "<group>"; };
 		7CD42FD528D3C6BE0056DA07 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		7CD42FDB28D3CBFA0056DA07 /* Pie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pie.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 			children = (
 				7CD42FD128D0E5880056DA07 /* AspectVGrid.swift */,
 				7C4324DE28C1723F009D1E16 /* EmojiMemoryGameView.swift */,
+				7CD42FDB28D3CBFA0056DA07 /* Pie.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -190,6 +193,7 @@
 				7CD42FD628D3C6BE0056DA07 /* Array.swift in Sources */,
 				7C02792528C813A7008BD857 /* MemoryGame.swift in Sources */,
 				7C4324DF28C1723F009D1E16 /* EmojiMemoryGameView.swift in Sources */,
+				7CD42FDC28D3CBFA0056DA07 /* Pie.swift in Sources */,
 				7CD42FD228D0E5880056DA07 /* AspectVGrid.swift in Sources */,
 				7C4324DD28C1723F009D1E16 /* MemorizeApp.swift in Sources */,
 				7C02792A28C8D681008BD857 /* Theme.swift in Sources */,
