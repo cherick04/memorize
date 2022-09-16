@@ -49,9 +49,16 @@ class EmojiMemoryGame: ObservableObject {
         }
     }
     
-    /// Property holds `Color` based on selected theme
+    var themeIsGradient: Bool {
+        theme.isGradient
+    }
+ 
     var themeColor: Color {
         Color.byName(theme.color)
+    }
+    
+    var themeName: String {
+        theme.name
     }
     
     // MARK: - Initializer

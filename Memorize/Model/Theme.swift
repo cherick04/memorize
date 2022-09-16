@@ -37,21 +37,18 @@ struct Theme {
         }
         
         if isNumberOfCardPairsRandom {
-            let random = Int.random(in: 1...data.count)
+            let random = Int.random(in: 2...data.count)
             return Array<String>(data[0..<random])
         }
         
         guard let numberOfCardPairs = numberOfCardPairs,
-            numberOfCardPairs > 0
+              numberOfCardPairs <= data.count,
+              numberOfCardPairs > 0
         else {
             return data
         }
         
-        if numberOfCardPairs > data.count {
-            return data
-        } else {
-            return Array<String>(data[0..<numberOfCardPairs])
-        }
+        return Array<String>(data[0..<numberOfCardPairs])
     }
     
     // MARK: - Initializers
@@ -68,6 +65,10 @@ struct Theme {
     private var category: Category
     private(set) var data: [String]
     private(set) var numberOfCardPairs: Int?
+    
+    var isGradient: Bool {
+        category == .cars
+    }
     
     var name: String {
         category.rawValue

@@ -21,7 +21,6 @@ struct EmojiMemoryGameView: View {
             AspectVGrid(items: game.cards, aspectRatio: 2/3) { card in
                 cardView(for: card)
             }
-            .foregroundColor(game.themeColor)
             
             newGameButton()
         }
@@ -31,7 +30,7 @@ struct EmojiMemoryGameView: View {
     /// Returns the theme name and the score
     private func header() -> some View {
         HStack {
-            Text(game.theme.name)
+            Text(game.themeName)
             Spacer()
             Text("Score:")
             Text(game.score).foregroundColor(game.scoreColor)
@@ -59,8 +58,8 @@ struct EmojiMemoryGameView: View {
         if card.isMatched && !card.isFaceUp {
             Rectangle().opacity(0)
         } else {
-            CardView(card: card)
-                .padding(4)
+            CardView(card: card, isGradient: game.themeIsGradient, color: game.themeColor)
+                .padding(3)
                 .onTapGesture {
                     game.choose(card)
                 }
@@ -71,6 +70,16 @@ struct EmojiMemoryGameView: View {
 /// Card View to be reused in game
 struct CardView: View {
     let card: EmojiMemoryGame.Card
+    let isGradient: Bool
+    let color: Color
+    
+    private var colors: [Color] {
+        var c = [color]
+        if isGradient {
+            c.append(.gray)
+        }
+        return c
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -78,14 +87,15 @@ struct CardView: View {
                 let shape = RoundedRectangle(cornerRadius: DrawingConstants.cornerRadius)
                 if card.isFaceUp {
                     shape.fill(.white)
-                    shape.strokeBorder(lineWidth: DrawingConstants.lineWidth)
+                    shape.strokeBorder(lineWidth: DrawingConstants.lineWidth).foregroundColor(color)
                     Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 110-90))
-                        .padding(5).opacity(0.5)
+                        .padding(5).opacity(0.5).foregroundColor(color)
                     Text(card.content).font(fontSize(width: geometry.size.width))
                 } else {
-                    shape.fill()
+                    shape.fill(LinearGradient(colors: colors, startPoint: .top, endPoint: .bottom))
                 }
             }
+            .foregroundColor(color)
         }
     }
     
