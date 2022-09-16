@@ -10,6 +10,16 @@ import SwiftUI
 struct EmojiMemoryGameView: View {
     @ObservedObject var game: EmojiMemoryGame
     
+    private var colors: [Color] {
+        var c = [game.themeColor]
+        // if theme color is gradient, add an arbitrary
+        // color to give it that gradient look
+        if game.themeIsGradient {
+            c.append(.gray)
+        }
+        return c
+    }
+    
     var body: some View {
         VStack {
             Text("MEMORIZE!")
@@ -21,6 +31,7 @@ struct EmojiMemoryGameView: View {
             AspectVGrid(items: game.cards, aspectRatio: 2/3) { card in
                 cardView(for: card)
             }
+            .foregroundStyle(LinearGradient(colors: colors, startPoint: .top, endPoint: .bottom))
             
             newGameButton()
         }
@@ -58,7 +69,7 @@ struct EmojiMemoryGameView: View {
         if card.isMatched && !card.isFaceUp {
             Rectangle().opacity(0)
         } else {
-            CardView(card: card, isGradient: game.themeIsGradient, color: game.themeColor)
+            CardView(card: card)
                 .padding(3)
                 .onTapGesture {
                     game.choose(card)
@@ -70,16 +81,6 @@ struct EmojiMemoryGameView: View {
 /// Card View to be reused in game
 struct CardView: View {
     let card: EmojiMemoryGame.Card
-    let isGradient: Bool
-    let color: Color
-    
-    private var colors: [Color] {
-        var c = [color]
-        if isGradient {
-            c.append(.gray)
-        }
-        return c
-    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -87,15 +88,14 @@ struct CardView: View {
                 let shape = RoundedRectangle(cornerRadius: DrawingConstants.cornerRadius)
                 if card.isFaceUp {
                     shape.fill(.white)
-                    shape.strokeBorder(lineWidth: DrawingConstants.lineWidth).foregroundColor(color)
+                    shape.strokeBorder(lineWidth: DrawingConstants.lineWidth)
                     Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 110-90))
-                        .padding(5).opacity(0.5).foregroundColor(color)
+                        .padding(5).opacity(0.5)
                     Text(card.content).font(fontSize(width: geometry.size.width))
                 } else {
-                    shape.fill(LinearGradient(colors: colors, startPoint: .top, endPoint: .bottom))
+                    shape.fill()
                 }
             }
-            .foregroundColor(color)
         }
     }
     
