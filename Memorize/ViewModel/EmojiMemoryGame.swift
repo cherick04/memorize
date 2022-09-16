@@ -12,16 +12,19 @@ import SwiftUI
 /// ViewModel uses `MemoryGame` model to interpret game functionality
 class EmojiMemoryGame: ObservableObject {
     
-    typealias Card = MemoryGame<String>.Card
+    typealias Game = MemoryGame<String>
+    typealias Card = Game.Card
+    
+    // MARK: - Static
     
     /// Returns an instance of MemoryGame
-    static func createMemoryGame(theme: Theme) -> MemoryGame<String> {
-        let data = theme.data()
-        return MemoryGame<String>(numberOfCardPairs: theme.cardPairCount()) { index in data[index] }
+    static func createMemoryGame(theme: Theme) -> Game {
+        let data = theme.data
+        return Game(numberOfCardPairs: theme.data.count) { index in data[index] }
     }
     
-    // MARK: Properties
-    @Published private(set) var model: MemoryGame<String>
+    // MARK: - Properties
+    @Published private(set) var model: Game
     private(set) var theme: Theme
     
     /// Array of all cards to be used in game
@@ -48,13 +51,13 @@ class EmojiMemoryGame: ObservableObject {
     
     /// Property holds `Color` based on selected theme
     var themeColor: Color {
-        Color.byName(theme.color())
+        Color.byName(theme.color)
     }
     
     // MARK: - Initializer
     /// Initializer used to control the order of property assignment
     init() {
-        theme = Theme.random()
+        theme = Theme()
         model = EmojiMemoryGame.createMemoryGame(theme: theme)
     }
     
@@ -65,7 +68,7 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     func newGame() {
-        theme = Theme.random()
+        theme = Theme(numberOfCardPairs: 3)
         model = EmojiMemoryGame.createMemoryGame(theme: theme)
     }
 }

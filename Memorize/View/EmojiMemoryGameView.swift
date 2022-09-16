@@ -11,35 +11,47 @@ struct EmojiMemoryGameView: View {
     @ObservedObject var game: EmojiMemoryGame
     
     var body: some View {
-        return VStack {
-            Text("MEMORIZE")
+        VStack {
+            Text("MEMORIZE!")
                 .font(.system(size: 34, weight: .black , design: .rounded))
-                .foregroundColor(.gray)
-                
-            HStack {
-                Text("Theme:").fontWeight(.bold)
-                Text(game.theme.rawValue)
-                Spacer()
-                Text("Score:").fontWeight(.bold)
-                Text(game.score).foregroundColor(game.scoreColor)
-            }
+                .padding(.bottom, -10.0)
+            
+            header()
+            
             AspectVGrid(items: game.cards, aspectRatio: 2/3) { card in
                 cardView(for: card)
             }
             .foregroundColor(game.themeColor)
-            ZStack {
-                RoundedRectangle(cornerRadius: 100)
-                    .frame(width: 150.0, height: 50)
-                    .foregroundColor(.blue)
-                Button (action: {
-                    game.newGame()
-                }, label: {
-                    Text("New Game").fontWeight(.black)
-                })
-                .foregroundColor(.white)
-            }
+            
+            newGameButton()
         }
         .padding(.horizontal)
+    }
+    
+    /// Returns the theme name and the score
+    private func header() -> some View {
+        HStack {
+            Text(game.theme.name)
+            Spacer()
+            Text("Score:")
+            Text(game.score).foregroundColor(game.scoreColor)
+        }
+        .font(.system(size: 25, weight: .semibold))
+    }
+    
+    /// Returns a New Game button
+    private func newGameButton() -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 100)
+                .frame(width: 150.0, height: 50)
+                .foregroundColor(.blue)
+            Button (action: {
+                game.newGame()
+            }, label: {
+                Text("New Game").fontWeight(.black)
+            })
+            .foregroundColor(.white)
+        }
     }
     
     @ViewBuilder
@@ -70,8 +82,6 @@ struct CardView: View {
                     Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 110-90))
                         .padding(5).opacity(0.5)
                     Text(card.content).font(fontSize(width: geometry.size.width))
-                } else if card.isMatched {
-                    shape.opacity(0)
                 } else {
                     shape.fill()
                 }

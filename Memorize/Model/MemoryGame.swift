@@ -10,7 +10,7 @@ import Foundation
 /// Model holding the basic functionality for a memory game
 struct MemoryGame<CardContent> where CardContent: Equatable {
     
-    // MARK: Properties
+    // MARK: - Properties
     
     private(set) var cards: [Card]
     private(set) var score: Int
@@ -27,7 +27,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
     }
     
-    // MARK: Initializer
+    // MARK: - Initializer
     
     init(numberOfCardPairs: Int, createCardContent: (Int) -> CardContent) {
         score = 0
@@ -41,7 +41,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         cards.shuffle()
     }
     
-    // MARK: Methods
+    // MARK: - Methods
     
     /// Chooses card and flips it if the card is not faced up nor matched.
     /// If a card has been faced up before, checks if there is a match and updates the score accordingly.
@@ -49,20 +49,22 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     /// - Parameter card: Card chosen to check the logic
     mutating func choose(_ card: Card) {
         
-        // Only check logic if card exists, is not faced up and has not been matched.
-        if let chosenIndex = cards.firstIndex(where: { $0.id == card.id }),
+        // Perform logic iff card exists, is not faced up and has not been matched.
+        guard let chosenIndex = cards.firstIndex(where: { $0.id == card.id }),
            !cards[chosenIndex].isFaceUp,
            !cards[chosenIndex].isMatched
-        {
-            if let possibleMatchIndex = facedUpCardIndex {
-                updateScore(for: possibleMatchIndex, and: chosenIndex)
-                cards[chosenIndex].isFaceUp = true
-            } else {
-                facedUpCardIndex = chosenIndex
-            }
-            
-            seenCardDictionary[chosenIndex] = seenCardDictionary[chosenIndex] == nil
+        else {
+            return
         }
+        
+        if let possibleMatchIndex = facedUpCardIndex {
+            updateScore(for: possibleMatchIndex, and: chosenIndex)
+            cards[chosenIndex].isFaceUp = true
+        } else {
+            facedUpCardIndex = chosenIndex
+        }
+        
+        seenCardDictionary[chosenIndex] = seenCardDictionary[chosenIndex] == nil
     }
     
     private mutating func updateScore(for cardOneIndex: Int, and cardTwoIndex: Int) {
@@ -93,7 +95,8 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
     }
     
-    // MARK:
+    // MARK: - Other Types
+    
     /// Model holding card information
     struct Card: Identifiable {
         var isFaceUp = false
