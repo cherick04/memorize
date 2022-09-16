@@ -10,16 +10,6 @@ import SwiftUI
 struct EmojiMemoryGameView: View {
     @ObservedObject var game: EmojiMemoryGame
     
-    private var colors: [Color] {
-        var c = [game.themeColor]
-        // if theme color is gradient, add an arbitrary
-        // color to give it that gradient look
-        if game.themeIsGradient {
-            c.append(.gray)
-        }
-        return c
-    }
-    
     var body: some View {
         VStack {
             Text("MEMORIZE!")
@@ -31,7 +21,6 @@ struct EmojiMemoryGameView: View {
             AspectVGrid(items: game.cards, aspectRatio: 2/3) { card in
                 cardView(for: card)
             }
-            .foregroundStyle(LinearGradient(colors: colors, startPoint: .top, endPoint: .bottom))
             
             newGameButton()
         }
@@ -70,6 +59,7 @@ struct EmojiMemoryGameView: View {
             Rectangle().opacity(0)
         } else {
             CardView(card: card)
+                .foregroundStyle(LinearGradient(colors: game.themeColors, startPoint: .top, endPoint: .bottom))
                 .padding(3)
                 .onTapGesture {
                     game.choose(card)
