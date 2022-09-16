@@ -18,6 +18,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     /// Dictionary holds information of the cards which have already been seen.
     /// Key is the card index. Value is a flag which indicates if the card has been previously shown or not
     private var seenCardDictionary: [Int: Bool]
+    private var firstCardDate: Date?
     private var facedUpCardIndex: Int? {
         get {
             cards.indices.filter({ cards[$0].isFaceUp }).oneAndOnly
@@ -60,8 +61,10 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         if let possibleMatchIndex = facedUpCardIndex {
             updateScore(for: possibleMatchIndex, and: chosenIndex)
             cards[chosenIndex].isFaceUp = true
+            firstCardDate = nil
         } else {
             facedUpCardIndex = chosenIndex
+            firstCardDate = Date()
         }
         
         seenCardDictionary[chosenIndex] = seenCardDictionary[chosenIndex] == nil
@@ -72,7 +75,10 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         if cards[cardOneIndex].content == cards[cardTwoIndex].content {
             cards[cardOneIndex].isMatched = true
             cards[cardTwoIndex].isMatched = true
-            score += 2
+            if let firstCardDate = firstCardDate {
+                let timeDifference = Int(Date().timeIntervalSince(firstCardDate))
+                score += max(10 - timeDifference, 1)
+            }
         // Mismatch
         } else {
             decraseScore(for: cardOneIndex)

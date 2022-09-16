@@ -59,7 +59,9 @@ struct EmojiMemoryGameView: View {
             Rectangle().opacity(0)
         } else {
             CardView(card: card)
-                .foregroundStyle(LinearGradient(colors: game.themeColors, startPoint: .top, endPoint: .bottom))
+                .foregroundStyle(
+                    LinearGradient(colors: game.themeColors, startPoint: .top, endPoint: .bottom)
+                )
                 .padding(3)
                 .onTapGesture {
                     game.choose(card)
