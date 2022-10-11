@@ -25,7 +25,7 @@ class EmojiMemoryGame: ObservableObject {
     
     // MARK: - Properties
     @Published private(set) var model: Game
-    private(set) var theme: Theme
+    var theme: Theme?
     
     /// Array of all cards to be used in game
     var cards: [Card] {
@@ -52,7 +52,9 @@ class EmojiMemoryGame: ObservableObject {
     /// If theme color is gradient, add an arbitrary color to give it that gradient look;
     /// otherwise, return an array of colors with only one element
     var themeColors: [Color] {
-        var colors = [Color.byName(theme.color)]
+        guard let theme = theme else { return [] }
+        
+        var colors = [Color.byRGBA(theme.color)]
         if theme.isGradient {
             colors.append(.gray)
         }
@@ -60,14 +62,13 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     var themeName: String {
-        theme.name
+        theme?.name ?? ""
     }
     
     // MARK: - Initializer
     /// Initializer used to control the order of property assignment
     init() {
-        theme = Theme()
-        model = EmojiMemoryGame.createMemoryGame(theme: theme)
+        model = Game()
     }
     
     // MARK: - Intent(s)
@@ -77,7 +78,6 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     func newGame() {
-        theme = Theme(numberOfCardPairs: 3)
-        model = EmojiMemoryGame.createMemoryGame(theme: theme)
+        model = Game()
     }
 }

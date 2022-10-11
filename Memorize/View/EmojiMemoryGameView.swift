@@ -16,40 +16,34 @@ struct EmojiMemoryGameView: View {
                 .font(.system(size: 34, weight: .black , design: .rounded))
                 .padding(.bottom, -10.0)
             
-            header()
+            header
             
             AspectVGrid(items: game.cards, aspectRatio: 2/3) { card in
                 cardView(for: card)
             }
             
-            newGameButton()
+            newGameButton
         }
         .padding(.horizontal)
     }
     
     /// Returns the theme name and the score
-    private func header() -> some View {
+    private var header: some View {
         HStack {
-            Text(game.themeName)
-            Spacer()
-            Text("Score:")
-            Text(game.score).foregroundColor(game.scoreColor)
+            if game.theme != nil {
+                Text(game.themeName)
+                Spacer()
+                Text("Score:")
+                Text(game.score).foregroundColor(game.scoreColor)
+            }
         }
         .font(.system(size: 25, weight: .semibold))
     }
     
     /// Returns a New Game button
-    private func newGameButton() -> some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 100)
-                .frame(width: 150.0, height: 50)
-                .foregroundColor(.blue)
-            Button (action: {
-                game.newGame()
-            }, label: {
-                Text("New Game").fontWeight(.black)
-            })
-            .foregroundColor(.white)
+    private var newGameButton: some View {
+        Button("Choose Theme") {
+            game.newGame()
         }
     }
     

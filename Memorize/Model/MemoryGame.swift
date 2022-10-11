@@ -12,12 +12,12 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     
     // MARK: - Properties
     
-    private(set) var cards: [Card]
-    private(set) var score: Int
+    private(set) var cards: [Card] = []
+    private(set) var score: Int = 0
     
     /// Dictionary holds information of the cards which have already been seen.
     /// Key is the card index. Value is a flag which indicates if the card has been previously shown or not
-    private var seenCardDictionary: [Int: Bool]
+    private var seenCardDictionary: [Int: Bool] = [:]
     private var firstCardDate: Date?
     private var facedUpCardIndex: Int? {
         get {
@@ -29,11 +29,9 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     }
     
     // MARK: - Initializer
+    init() {}
     
     init(numberOfCardPairs: Int, createCardContent: (Int) -> CardContent) {
-        score = 0
-        cards = []
-        seenCardDictionary = [:]
         for pairIndex in 0..<numberOfCardPairs {
             let content = createCardContent(pairIndex)
             cards.append(Card(content: content, id: pairIndex * 2))
