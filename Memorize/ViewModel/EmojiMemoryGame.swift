@@ -19,8 +19,8 @@ class EmojiMemoryGame: ObservableObject {
     
     /// Returns an instance of MemoryGame
     static func createMemoryGame(theme: Theme) -> Game {
-        let data = theme.data
-        return Game(numberOfCardPairs: theme.data.count) { index in data[index] }
+        let data = theme.emojis
+        return Game(numberOfCardPairs: data.count) { index in data[index] }
     }
     
     // MARK: - Properties

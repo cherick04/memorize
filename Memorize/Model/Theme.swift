@@ -9,93 +9,45 @@ import Foundation
 
 /// Model listing all possible themes in the form of emojis
 struct Theme {
+    var name: String
+    var emojis: [String]
+    var color: String
     
-    // MARK: - Static
-    
-    // Given a `Category`, returns an array of `String` to be used as data
-    static private func getData(for category: Category, with numberOfCardPairs: Int? = nil) -> [String] {
-        var isNumberOfCardPairsRandom = false
-        var data: [String]
-        
-        switch category {
-        case .cars:
-            data = ["🚗", "🚕", "🚙", "🏎", "🚓", "🛺", "🚘", "🚖", "🚔"].shuffled()
-        case .bigCars:
-            data = ["🚚", "🚛", "🚒", "🚐", "🚜", "🚑", "🛻", "🚍", "🚌", "🚎"].shuffled()
-        case .trains:
-            data =  ["🚞", "🚝", "🚄", "🚅", "🚈", "🚂", "🚆", "🚇", "🚊", "🚉"].shuffled()
-        case .animalFaces:
-            isNumberOfCardPairsRandom = true
-            data =  ["🐶", "🐱", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🐯", "🦁", "🐷", "🐮", "🐸"].shuffled()
-        case .animals:
-            data =  ["🐅", "🐆", "🦓", "🦍", "🐘", "🦛", "🦏", "🦬", "🐃", "🐂", "🐄"].shuffled()
-        case .sAmericanFlags:
-            data =  ["🇦🇷", "🇧🇷", "🇧🇴", "🇨🇱", "🇺🇾", "🇵🇾", "🇪🇨", "🇨🇴", "🇻🇪", "🇵🇪"].shuffled()
-        case .asianFlags:
-            isNumberOfCardPairsRandom = true
-            data =  ["🇨🇳", "🇷🇺", "🇯🇵", "🇰🇵", "🇰🇷", "🇻🇳", "🇹🇭", "🇹🇼", "🇵🇭", "🇲🇳", "🇰🇭", "🇸🇬"].shuffled()
-        }
-        
-        if isNumberOfCardPairsRandom {
-            let random = Int.random(in: 2...data.count)
-            return Array<String>(data[0..<random])
-        }
-        
-        guard let numberOfCardPairs = numberOfCardPairs,
-              numberOfCardPairs <= data.count,
-              numberOfCardPairs > 0
-        else {
-            return data
-        }
-        
-        return Array<String>(data[0..<numberOfCardPairs])
-    }
+    private let emojiData = [
+        "Cars": (["🚗", "🚕", "🚙", "🏎", "🚓", "🛺", "🚘", "🚖", "🚔"], "red"),
+        "Big Cars": (["🚚", "🚛", "🚒", "🚐", "🚜", "🚑", "🛻", "🚍", "🚌", "🚎"], "orange"),
+        "Trains": (["🚞", "🚝", "🚄", "🚅", "🚈", "🚂", "🚆", "🚇", "🚊", "🚉"], "yellow"),
+        "Animal Faces": (["🐶", "🐱", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🐯", "🦁", "🐷", "🐮", "🐸"], "purple"),
+        "Animals": (["🐅", "🐆", "🦓", "🦍", "🐘", "🦛", "🦏", "🦬", "🐃", "🐂", "🐄"], "pink"),
+        "S. American Flags": (["🇦🇷", "🇧🇷", "🇧🇴", "🇨🇱", "🇺🇾", "🇵🇾", "🇪🇨", "🇨🇴", "🇻🇪", "🇵🇪"], "green"),
+        "Asian Flags": (["🇨🇳", "🇷🇺", "🇯🇵", "🇰🇵", "🇰🇷", "🇻🇳", "🇹🇭", "🇹🇼", "🇵🇭", "🇲🇳", "🇰🇭", "🇸🇬"], "blue")
+    ]
     
     // MARK: - Initializers
     
+    init(name: String, emojis: [String], color: String, numberOfCardPairs: Int? = nil) {
+        self.name = name
+        self.emojis = emojis
+        self.color = color
+    }
+    
     init(numberOfCardPairs: Int? = nil) {
-        self.category = Category.allCases.randomElement()!
-        self.numberOfCardPairs = numberOfCardPairs
-        self.data = Theme.getData(for: self.category, with: numberOfCardPairs)
+        let randomIndex =  Int.random(in: 0..<emojiData.count)
+        self.name = Array(emojiData.keys)[randomIndex]
+        self.color = Array(emojiData.values)[randomIndex].1
         
+        var emojis = Array(emojiData.values)[randomIndex].0.shuffled()
+        if let numberOfCardPairs = numberOfCardPairs,
+           numberOfCardPairs <= emojis.count,
+           numberOfCardPairs > 0 {
+            emojis = Array<String>(emojis[0..<numberOfCardPairs])
+        }
+        self.emojis = emojis
     }
     
     // MARK: - Properties
     
-    private var category: Category
-    private(set) var data: [String]
-    private(set) var numberOfCardPairs: Int?
-    
     var isGradient: Bool {
-        category == .cars
-    }
-    
-    var name: String {
-        category.rawValue
-    }
-    
-    /// Returns the name of the color based on theme
-    var color: String {
-        switch category {
-        case .cars: return "red"
-        case .bigCars: return "orange"
-        case .trains: return "yellow"
-        case .animalFaces: return "purple"
-        case .animals: return "pink"
-        case .sAmericanFlags: return "green"
-        case .asianFlags: return "blue"
-        }
-    }
-    
-    // MARK: - Other Types
-    
-    enum Category: String, CaseIterable {
-        case cars = "Cars"
-        case bigCars = "Big Cars"
-        case trains = "Trains"
-        case animalFaces = "Animal Faces"
-        case animals = "Animals"
-        case sAmericanFlags = "S. American Flags"
-        case asianFlags = "Asian Flags"
+        name == "Cars"
     }
 }
