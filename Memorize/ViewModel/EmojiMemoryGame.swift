@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 import SwiftUI
 
 /// ViewModel uses `MemoryGame` model to interpret game functionality
