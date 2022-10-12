@@ -12,10 +12,15 @@ struct EmojiMemoryGameView: View {
     
     var body: some View {
         VStack {
-            Text("MEMORIZE!")
-                .font(.system(size: 34, weight: .black , design: .rounded))
-                .padding(.bottom, -10.0)
-            
+            HStack {
+                ThemeChooser()
+                    .imageScale(.large)
+                Spacer()
+                Text("MEMORIZE!")
+                    .font(.system(size: 34, weight: .black , design: .rounded))
+                    .padding(.bottom, -10.0)
+                Spacer()
+            }
             header
             AspectVGrid(items: game.cards, aspectRatio: 2/3) { cardView(for: $0) }
             newGameButton
