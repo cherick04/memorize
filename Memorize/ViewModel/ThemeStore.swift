@@ -77,7 +77,7 @@ class ThemeStore: ObservableObject {
                 color: Theme.RGBA(red: 0, green: 255, blue: 0, alpha: 0.8)
             )
             insertTheme(
-                named: "S.American Flags",
+                named: "Asian Flags",
                 emojis: ["🇨🇳", "🇷🇺", "🇯🇵", "🇰🇵", "🇰🇷", "🇻🇳", "🇹🇭", "🇹🇼", "🇵🇭", "🇲🇳", "🇰🇭", "🇸🇬"],
                 color: Theme.RGBA(red: 0, green: 0, blue: 255, alpha: 0.8)
             )
