@@ -15,17 +15,21 @@ class EmojiMemoryGame: ObservableObject {
     typealias Game = MemoryGame<String>
     typealias Card = Game.Card
     
-    // MARK: - Static
+    // MARK: - Initializer
     
-    /// Returns an instance of MemoryGame
-    static func createMemoryGame(theme: Theme) -> Game {
-        let data = theme.emojis
-        return Game(numberOfCardPairs: data.count) { index in data[index] }
+    init() {
+        model = Game()
     }
     
     // MARK: - Properties
+    
     @Published private(set) var model: Game
-    var theme: Theme?
+    
+    var theme: Theme? {
+        didSet {
+            createMemoryGame()
+        }
+    }
     
     /// Array of all cards to be used in game
     var cards: [Card] {
@@ -65,10 +69,14 @@ class EmojiMemoryGame: ObservableObject {
         theme?.name ?? ""
     }
     
-    // MARK: - Initializer
-    /// Initializer used to control the order of property assignment
-    init() {
-        model = Game()
+    // MARK: - Private
+    
+    /// Creates a new memory game if a theme exists
+    private func createMemoryGame() {
+        guard let theme = theme else { return }
+        
+        let data = theme.emojis
+        model = Game(numberOfCardPairs: data.count) { index in data[index] }
     }
     
     // MARK: - Intent(s)
@@ -78,6 +86,6 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     func newGame() {
-        model = Game()
+        createMemoryGame()
     }
 }

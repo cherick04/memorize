@@ -17,11 +17,7 @@ struct EmojiMemoryGameView: View {
                 .padding(.bottom, -10.0)
             
             header
-            
-            AspectVGrid(items: game.cards, aspectRatio: 2/3) { card in
-                cardView(for: card)
-            }
-            
+            AspectVGrid(items: game.cards, aspectRatio: 2/3) { cardView(for: $0) }
             newGameButton
         }
         .padding(.horizontal)
@@ -42,7 +38,7 @@ struct EmojiMemoryGameView: View {
     
     /// Returns a New Game button
     private var newGameButton: some View {
-        Button("Choose Theme") {
+        Button("New Game") {
             game.newGame()
         }
     }
