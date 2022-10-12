@@ -21,4 +21,10 @@ struct ThemeManager: View {
             }
         }
     }
+    
+    private func colorSample(for theme: Theme) -> some View {
+        Rectangle()
+            .foregroundColor(Color.byRGBA(theme.color))
+            .frame(width: 25, height: 25)
+    }
 }

@@ -29,6 +29,7 @@ struct Theme: Identifiable {
     
     // MARK: - Other
     
+    /// Values for each property must be from 0 to 1.0
     struct RGBA {
         let red: Double
         let green: Double
@@ -49,37 +50,37 @@ class ThemeStore: ObservableObject {
             insertTheme(
                 named: "Cars",
                 emojis: ["🚗", "🚕", "🚙", "🏎", "🚓", "🛺", "🚘", "🚖", "🚔"],
-                color: Theme.RGBA(red: 255, green: 0, blue: 0, alpha: 0.8)
+                color: Theme.RGBA(red: 1, green: 0, blue: 0, alpha: 0.8)
             )
             insertTheme(
                 named: "Big Cars",
                 emojis: ["🚚", "🚛", "🚒", "🚐", "🚜", "🚑", "🛻", "🚍", "🚌", "🚎"],
-                color: Theme.RGBA(red: 255, green: 130, blue: 0, alpha: 0.8)
+                color: Theme.RGBA(red: 1, green: 0.5, blue: 0, alpha: 0.8)
             )
             insertTheme(
                 named: "Trains",
                 emojis: ["🚞", "🚝", "🚄", "🚅", "🚈", "🚂", "🚆", "🚇", "🚊", "🚉"],
-                color: Theme.RGBA(red: 255, green: 255, blue: 0, alpha: 0.8)
+                color: Theme.RGBA(red: 1, green: 1, blue: 0, alpha: 0.8)
             )
             insertTheme(
                 named: "Animal Faces",
                 emojis: ["🐶", "🐱", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🐯", "🦁", "🐷", "🐮", "🐸"],
-                color: Theme.RGBA(red: 165, green: 0, blue: 255, alpha: 0.8)
+                color: Theme.RGBA(red: 0.65, green: 0, blue: 1, alpha: 0.8)
             )
             insertTheme(
                 named: "Animal",
                 emojis: ["🐅", "🐆", "🦓", "🦍", "🐘", "🦛", "🦏", "🦬", "🐃", "🐂", "🐄"],
-                color: Theme.RGBA(red: 255, green: 0, blue: 165, alpha: 0.8)
+                color: Theme.RGBA(red: 1, green: 0, blue: 0.65, alpha: 0.8)
             )
             insertTheme(
                 named: "S.American Flags",
                 emojis: ["🇦🇷", "🇧🇷", "🇧🇴", "🇨🇱", "🇺🇾", "🇵🇾", "🇪🇨", "🇨🇴", "🇻🇪", "🇵🇪"],
-                color: Theme.RGBA(red: 0, green: 255, blue: 0, alpha: 0.8)
+                color: Theme.RGBA(red: 0, green: 1, blue: 0, alpha: 0.8)
             )
             insertTheme(
                 named: "Asian Flags",
                 emojis: ["🇨🇳", "🇷🇺", "🇯🇵", "🇰🇵", "🇰🇷", "🇻🇳", "🇹🇭", "🇹🇼", "🇵🇭", "🇲🇳", "🇰🇭", "🇸🇬"],
-                color: Theme.RGBA(red: 0, green: 0, blue: 255, alpha: 0.8)
+                color: Theme.RGBA(red: 0, green: 0, blue: 1, alpha: 0.8)
             )
         }
     }
