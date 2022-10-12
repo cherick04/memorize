@@ -44,14 +44,28 @@ struct ThemeManager: View {
     private func colorSample(for theme: Theme) -> some View {
         Rectangle()
             .foregroundColor(Color.byRGBA(theme.color))
-            .frame(width: 15, height: 15)
+            .frame(
+                width: Constants.colorSampleLength,
+                height: Constants.colorSampleLength
+            )
     }
     
     private func emojiSamples(for theme: Theme) -> some View {
-        HStack {
-            ForEach(theme.emojis, id: \.self) { emoji in
+        let emojis = theme.emojis.count <= Constants.maxEmojiSampleCount
+            ? theme.emojis
+            : Array<String>(theme.emojis[0..<Constants.maxEmojiSampleCount])
+        return HStack {
+            ForEach(emojis, id: \.self) { emoji in
                 Text(emoji)
             }
+            if theme.emojis.count > Constants.maxEmojiSampleCount {
+                Text("...")
+            }
         }
+    }
+    
+    private struct Constants {
+        static let colorSampleLength: CGFloat = 15
+        static let maxEmojiSampleCount = 10
     }
 }
