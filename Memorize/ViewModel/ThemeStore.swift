@@ -8,7 +8,7 @@
 import Foundation
 
 /// Struct that builds a Theme
-struct Theme: Identifiable, Hashable {
+struct Theme: Identifiable, Hashable, Codable {
     var name: String
     var emojis: String
     var rgbaColor: RGBAColor
@@ -31,11 +31,16 @@ struct Theme: Identifiable, Hashable {
 class ThemeStore: ObservableObject {
     let name: String
     
-    @Published var themes = [Theme]()
+    @Published var themes = [Theme]() {
+        didSet {
+            storeInUserDefaults()
+        }
+    }
     
     init(name: String) {
         self.name = name
         
+        restoreFromUserDefaults()
         if themes.isEmpty {
             insertTheme(
                 named: "Cars",
@@ -75,6 +80,22 @@ class ThemeStore: ObservableObject {
         }
     }
     
+    // MARK: - UserDefaults
+    
+    private var userDefaultsKey: String {
+        "ThemeStore:" + name
+    }
+    
+    private func storeInUserDefaults() {
+        UserDefaults.standard.set(try? JSONEncoder().encode(themes), forKey: userDefaultsKey)
+    }
+    
+    private func restoreFromUserDefaults() {
+        if let jsonData = UserDefaults.standard.data(forKey: userDefaultsKey),
+           let decodedThemes = try? JSONDecoder().decode([Theme].self, from: jsonData) {
+            themes = decodedThemes
+        }
+    }
     // MARK: - Intent(s)
     
     func theme(at index: Int) -> Theme {

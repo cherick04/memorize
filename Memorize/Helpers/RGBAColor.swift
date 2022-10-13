@@ -8,7 +8,7 @@
 import Foundation
 
 /// Values for each property must be from 0 to 1.0
-struct RGBAColor: Hashable {
+struct RGBAColor: Hashable, Codable {
     let red: Double
     let green: Double
     let blue: Double
