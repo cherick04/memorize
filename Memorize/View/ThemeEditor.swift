@@ -51,6 +51,9 @@ struct ThemeEditor: View {
     private var colorSection: some View {
         Section("Color") {
             ColorPicker("Choose color", selection: $color)
+                .onChange(of: color) { color in
+                    theme.color = color.toRGBA
+                }
         }
     }
 
