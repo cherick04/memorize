@@ -13,21 +13,27 @@ struct ThemeManager: View {
     @Environment(\.presentationMode) private var presentationMode
     
     @State private var themeToAdd: Theme?
+    @State private var editMode: EditMode = .inactive
     
     var body: some View {
         NavigationView {
             List {
                 ForEach(store.themes) { theme in
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 5) {
                         HStack {
                             colorSample(for: theme)
                             Text(theme.name)
-                            Spacer()
-                            Text("Card Count: \(theme.emojis.count)")
                         }
-                        numberOfCardPairs(for: theme)
+                        Text("Number of card pairs: \(theme.emojis.count)")
+                        Text("Number of card pairs to be used: \(theme.cardPairCount ?? theme.emojis.count)")
                         emojiSamples(for: theme)
                     }
+                }
+                .onDelete { indexSet in
+                    store.themes.remove(atOffsets: indexSet)
+                }
+                .onMove { indexSet, newOffset in
+                    store.themes.move(fromOffsets: indexSet, toOffset: newOffset)
                 }
             }
             .navigationTitle("Themes")
@@ -40,6 +46,7 @@ struct ThemeManager: View {
                         }
                     }
                 }
+                ToolbarItem { EditButton() }
                 ToolbarItem {
                     Button {
                         store.insertTheme(named: "New Theme", at: 0)
@@ -64,15 +71,6 @@ struct ThemeManager: View {
             )
     }
     
-    private func numberOfCardPairs(for theme: Theme) -> some View {
-        var str = ""
-        if let cardPairCount = theme.cardPairCount {
-            str = "Number of card pairs to play: \(cardPairCount)"
-        } 
-        
-        return Text(str)
-    }
-    
     private func emojiSamples(for theme: Theme) -> some View {
         let emojis = theme.emojis.count <= Constants.maxEmojiSampleCount
         ? theme.emojis.map { $0 }
@@ -89,6 +87,6 @@ struct ThemeManager: View {
     
     private struct Constants {
         static let colorSampleLength: CGFloat = 15
-        static let maxEmojiSampleCount = 10
+        static let maxEmojiSampleCount = 8
     }
 }
