@@ -23,6 +23,7 @@ struct ThemeEditor: View {
             removeEmojiSection
         }
         .navigationTitle("Edit \(theme.name)")
+        .frame(minWidth: 400, minHeight: 550)
     }
     
     private var nameSection: some View {
