@@ -51,18 +51,6 @@ class EmojiMemoryGame: ObservableObject {
             return .black
         }
     }
- 
-    /// If theme color is gradient, add an arbitrary color to give it that gradient look;
-    /// otherwise, return an array of colors with only one element
-    var themeColors: [Color] {
-        guard let theme = theme else { return [] }
-        
-        var colors = [theme.rgbaColor.color]
-        if theme.isGradient {
-            colors.append(.gray)
-        }
-        return colors
-    }
     
     var themeName: String {
         theme?.name ?? ""

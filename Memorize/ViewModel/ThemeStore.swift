@@ -7,18 +7,7 @@
 
 import Foundation
 
-/// Struct that builds a Theme
-struct Theme: Identifiable, Hashable, Codable {
-    var name: String
-    var emojis: String
-    var rgbaColor: RGBAColor
-    var cardPairCount: Int?
-    let id: Int
-    
-    var isGradient = false
-    
-    // MARK: - Initializers
-    
+extension Theme {
     fileprivate init(name: String, emojis: String, rgbaColor: RGBAColor, id: Int, cardPairCount: Int?) {
         self.name = name
         self.emojis = emojis
