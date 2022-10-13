@@ -9,11 +9,13 @@ import SwiftUI
 
 struct ThemeEditor: View {
     @Binding var theme: Theme
-    
+
+    @State private var isCustomCardCountOn = false
     @State private var cardCount = Constants.cardCountMin
     @State private var color = Color.white
     @State private var emojisToAdd = ""
     
+    // TODO: - Add a submit and cancel button
     var body: some View {
         Form {
             nameSection
@@ -33,11 +35,14 @@ struct ThemeEditor: View {
     }
     
     private var cardPairSection: some View {
-        Section("Number of card pairs") {
+        return Section("Number of card pairs to show") {
+            Toggle("Custom", isOn: $isCustomCardCountOn)
             Stepper(
                 String(cardCount),
                 onIncrement: {
-                    cardCount += 1
+                    if cardCount < theme.emojis.count {
+                        cardCount += 1
+                    }
                 }, onDecrement: {
                     cardCount -= 1
                     if cardCount < Constants.cardCountMin {
@@ -45,6 +50,12 @@ struct ThemeEditor: View {
                     }
                 }
             )
+            .onChange(of: cardCount) { cardCount in
+                if isCustomCardCountOn {
+                    theme.cardPairCount = cardCount
+                }
+            }
+            .disabled(!isCustomCardCountOn)
         }
     }
     
@@ -71,6 +82,7 @@ struct ThemeEditor: View {
             theme.emojis = (emojis + theme.emojis)
                 .filter { $0.isEmoji }
                 .removingDuplicateCharacters
+            updateCardCount()
         }
     }
     
@@ -83,11 +95,20 @@ struct ThemeEditor: View {
                         .onTapGesture {
                             withAnimation {
                                 theme.emojis.removeAll(where: { String($0) == emoji })
+                                updateCardCount()
                             }
                         }
                 }
             }
             .font(.system(size: Constants.emojiSize))
+        }
+    }
+    
+    // MARK: - Helpers
+    
+    private func updateCardCount() {
+        if !isCustomCardCountOn {
+            cardCount = theme.emojis.count
         }
     }
     
