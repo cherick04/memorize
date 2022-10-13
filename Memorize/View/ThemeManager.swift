@@ -12,6 +12,7 @@ struct ThemeManager: View {
     
     @Environment(\.presentationMode) private var presentationMode
     
+    @State private var themeToEdit: Theme?
     @State private var themeToAdd: Theme?
     @State private var editMode: EditMode = .inactive
     
@@ -19,14 +20,20 @@ struct ThemeManager: View {
         NavigationView {
             List {
                 ForEach(store.themes) { theme in
-                    VStack(alignment: .leading, spacing: 5) {
+                    VStack(alignment: .leading, spacing: Constants.verticalSpacing) {
                         HStack {
                             colorSample(for: theme)
                             Text(theme.name)
+                            Spacer() // 1
                         }
                         Text("Number of card pairs: \(theme.emojis.count)")
                         Text("Number of card pairs to be used: \(theme.cardPairCount ?? theme.emojis.count)")
                         emojiSamples(for: theme)
+                    }
+                    .contentShape(Rectangle()) // 2 - 1 & 2 needed to make the whole row tapable
+                    .gesture(editMode == .active ? tap(for: theme) : nil)
+                    .sheet(item: $themeToEdit) { themeToEdit in
+                        ThemeEditor(theme: $store.themes[themeToEdit])
                     }
                 }
                 .onDelete { indexSet in
@@ -54,11 +61,12 @@ struct ThemeManager: View {
                     } label: {
                         Image(systemName: "plus")
                     }
-                    .popover(item: $themeToAdd, arrowEdge: .bottom) { theme in
-                        ThemeEditor(theme: $store.themes[theme])
+                    .popover(item: $themeToAdd, arrowEdge: .bottom) { newTheme in
+                        ThemeEditor(theme: $store.themes[newTheme])
                     }
                 }
             }
+            .environment(\.editMode, $editMode)
         }
     }
     
@@ -75,6 +83,7 @@ struct ThemeManager: View {
         let emojis = theme.emojis.count <= Constants.maxEmojiSampleCount
         ? theme.emojis.map { $0 }
         : Array<Character>(theme.emojis.map { $0 }[0..<Constants.maxEmojiSampleCount])
+        
         return HStack {
             ForEach(emojis, id: \.self) { emoji in
                 Text(String(emoji))
@@ -85,8 +94,22 @@ struct ThemeManager: View {
         }
     }
     
+    private func tap(for theme: Theme) -> some Gesture {
+        TapGesture().onEnded {
+            themeToEdit = theme
+        }
+    }
+    
     private struct Constants {
         static let colorSampleLength: CGFloat = 15
         static let maxEmojiSampleCount = 8
+        static let verticalSpacing: CGFloat = 5
+    }
+}
+
+struct ThemeManager_Previews: PreviewProvider {
+    static var previews: some View {
+        ThemeManager()
+            .environmentObject(ThemeStore(name: "Preview"))
     }
 }
