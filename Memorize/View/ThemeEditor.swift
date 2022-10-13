@@ -64,24 +64,21 @@ struct ThemeEditor: View {
     
     private func addEmojis(_ emojis: String) {
         withAnimation {
-            let newEmojis = emojis
+            theme.emojis = (emojis + theme.emojis)
                 .filter { $0.isEmoji }
-                .map { String($0) }
                 .removingDuplicateCharacters
-            theme.emojis.append(contentsOf: newEmojis)
-                
         }
     }
     
     private var removeEmojiSection: some View {
         Section(header: Text("Remove Emoji")) {
-            let emojis = theme.emojis.removingDuplicateCharacters
+            let emojis = theme.emojis.removingDuplicateCharacters.map { String($0) }
             LazyVGrid(columns: [GridItem(.adaptive(minimum: Constants.emojiSize))]) {
                 ForEach(emojis, id: \.self) { emoji in
                     Text(emoji)
                         .onTapGesture {
                             withAnimation {
-                                theme.emojis.removeAll(where: { $0 == emoji })
+                                theme.emojis.removeAll(where: { String($0) == emoji })
                             }
                         }
                 }

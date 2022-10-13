@@ -10,7 +10,7 @@ import SwiftUI
 /// Struct that builds a Theme
 struct Theme: Identifiable, Hashable {
     var name: String
-    var emojis: [String]
+    var emojis: String
     var color: RGBA
     var cardPairCount: Int?
     let id: Int
@@ -19,7 +19,7 @@ struct Theme: Identifiable, Hashable {
     
     // MARK: - Initializers
     
-    fileprivate init(name: String, emojis: [String], color: RGBA, id: Int, cardPairCount: Int?) {
+    fileprivate init(name: String, emojis: String, color: RGBA, id: Int, cardPairCount: Int?) {
         self.name = name
         self.emojis = emojis
         self.color = color
@@ -49,37 +49,37 @@ class ThemeStore: ObservableObject {
         if themes.isEmpty {
             insertTheme(
                 named: "Cars",
-                emojis: ["🚗", "🚕", "🚙", "🏎", "🚓", "🛺", "🚘", "🚖", "🚔"],
+                emojis: "🚗🚕🚙🏎🚓🛺🚘🚖🚔",
                 color: Theme.RGBA(red: 1, green: 0, blue: 0, alpha: 0.8)
             )
             insertTheme(
                 named: "Big Cars",
-                emojis: ["🚚", "🚛", "🚒", "🚐", "🚜", "🚑", "🛻", "🚍", "🚌", "🚎"],
+                emojis: "🚚🚛🚒🚐🚜🚑🛻🚍🚌🚎",
                 color: Theme.RGBA(red: 1, green: 0.5, blue: 0, alpha: 0.8)
             )
             insertTheme(
                 named: "Trains",
-                emojis: ["🚞", "🚝", "🚄", "🚅", "🚈", "🚂", "🚆", "🚇", "🚊", "🚉"],
+                emojis: "🚞🚝🚄🚅🚈🚂🚆🚇🚊🚉",
                 color: Theme.RGBA(red: 1, green: 1, blue: 0, alpha: 0.8)
             )
             insertTheme(
                 named: "Animal Faces",
-                emojis: ["🐶", "🐱", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🐯", "🦁", "🐷", "🐮", "🐸"],
+                emojis: "🐶🐱🦊🐻🐼🐻‍❄️🐨🐯🦁🐷🐮🐸",
                 color: Theme.RGBA(red: 0.65, green: 0, blue: 1, alpha: 0.8)
             )
             insertTheme(
                 named: "Animal",
-                emojis: ["🐅", "🐆", "🦓", "🦍", "🐘", "🦛", "🦏", "🦬", "🐃", "🐂", "🐄"],
+                emojis: "🐅🐆🦓🦍🐘🦛🦏🦬🐃🐂🐄",
                 color: Theme.RGBA(red: 1, green: 0, blue: 0.65, alpha: 0.8)
             )
             insertTheme(
                 named: "S.American Flags",
-                emojis: ["🇦🇷", "🇧🇷", "🇧🇴", "🇨🇱", "🇺🇾", "🇵🇾", "🇪🇨", "🇨🇴", "🇻🇪", "🇵🇪"],
+                emojis: "🇦🇷🇧🇷🇧🇴🇨🇱🇺🇾🇵🇾🇪🇨🇨🇴🇻🇪🇵🇪",
                 color: Theme.RGBA(red: 0, green: 1, blue: 0, alpha: 0.8)
             )
             insertTheme(
                 named: "Asian Flags",
-                emojis: ["🇨🇳", "🇷🇺", "🇯🇵", "🇰🇵", "🇰🇷", "🇻🇳", "🇹🇭", "🇹🇼", "🇵🇭", "🇲🇳", "🇰🇭", "🇸🇬"],
+                emojis: "🇨🇳🇷🇺🇯🇵🇰🇵🇰🇷🇻🇳🇹🇭🇹🇼🇵🇭🇲🇳🇰🇭🇸🇬",
                 color: Theme.RGBA(red: 0, green: 0, blue: 1, alpha: 0.8)
             )
         }
@@ -102,7 +102,7 @@ class ThemeStore: ObservableObject {
     
     func insertTheme(
         named name: String,
-        emojis: [String] = [],
+        emojis: String = "",
         color: Theme.RGBA = Theme.RGBA(red: 1, green: 1, blue: 1, alpha: 1),
         cardPairCount: Int? = nil,
         at index: Int = 0) {

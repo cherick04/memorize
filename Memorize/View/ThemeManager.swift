@@ -65,10 +65,10 @@ struct ThemeManager: View {
     
     private func emojiSamples(for theme: Theme) -> some View {
         let emojis = theme.emojis.count <= Constants.maxEmojiSampleCount
-            ? theme.emojis
-            : Array<String>(theme.emojis[0..<Constants.maxEmojiSampleCount])
+        ? theme.emojis
+        : String(theme.emojis[0..<Constants.maxEmojiSampleCount])
         return HStack {
-            ForEach(emojis, id: \.self) { emoji in
+            ForEach([emojis], id: \.self) { emoji in
                 Text(emoji)
             }
             if theme.emojis.count > Constants.maxEmojiSampleCount {

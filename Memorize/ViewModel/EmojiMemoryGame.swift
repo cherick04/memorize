@@ -75,7 +75,7 @@ class EmojiMemoryGame: ObservableObject {
         guard let theme = theme else { return }
         
         let data = theme.emojis
-        model = Game(numberOfCardPairs: data.count) { index in data[index] }
+        model = Game(numberOfCardPairs: data.count) { index in String(data[index]) }
     }
     
     // MARK: - Intent(s)
