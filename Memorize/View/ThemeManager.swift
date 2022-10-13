@@ -76,7 +76,7 @@ struct ThemeManager: View {
     
     private func colorSample(for theme: Theme) -> some View {
         Rectangle()
-            .foregroundColor(Color.byRGBA(theme.color))
+            .foregroundColor(theme.rgbaColor.color)
             .frame(
                 width: Constants.colorSampleLength,
                 height: Constants.colorSampleLength

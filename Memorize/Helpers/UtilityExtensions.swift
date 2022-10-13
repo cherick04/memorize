@@ -15,29 +15,33 @@ extension Array {
 }
 
 extension Color {
-    /// Returns a `Color` value based on a `Theme.RGBA` value given
-    static func byRGBA(_ rgba: Theme.RGBA) -> Color {
-        Color(
-            red: rgba.red,
-            green: rgba.green,
-            blue: rgba.blue,
-            opacity: rgba.alpha
-        )
-    }
-    
-    var toRGBA: Theme.RGBA {
+    var rgbaColor: RGBAColor {
         var red: CGFloat = 0
         var green: CGFloat = 0
         var blue: CGFloat = 0
         var alpha: CGFloat = 0
         UIColor(self).getRed(&red, green: &green, blue: &blue, alpha: &alpha)
         
-        return Theme.RGBA(
+        return RGBAColor(
             red: Double(red),
             green: Double(green),
             blue: Double(blue),
             alpha: Double(alpha)
         )
+    }
+}
+
+extension RGBAColor {
+    var color: Color {
+        get {
+            Color(
+                red: red,
+                green: green,
+                blue: blue,
+                opacity: alpha
+            )
+        }
+        set { self = newValue.rgbaColor }
     }
 }
 

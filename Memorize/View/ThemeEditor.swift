@@ -12,7 +12,6 @@ struct ThemeEditor: View {
 
     @State private var isCustomCardCountOn = false
     @State private var cardCount = Constants.cardCountMin
-    @State private var color = Color.white
     @State private var emojisToAdd = ""
     
     // TODO: - Add a submit and cancel button
@@ -61,10 +60,7 @@ struct ThemeEditor: View {
     
     private var colorSection: some View {
         Section("Color") {
-            ColorPicker("Choose color", selection: $color)
-                .onChange(of: color) { color in
-                    theme.color = color.toRGBA
-                }
+            ColorPicker("Choose color", selection: $theme.rgbaColor.color)
         }
     }
 

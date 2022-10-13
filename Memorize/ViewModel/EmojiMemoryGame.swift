@@ -57,7 +57,7 @@ class EmojiMemoryGame: ObservableObject {
     var themeColors: [Color] {
         guard let theme = theme else { return [] }
         
-        var colors = [Color.byRGBA(theme.color)]
+        var colors = [theme.rgbaColor.color]
         if theme.isGradient {
             colors.append(.gray)
         }
