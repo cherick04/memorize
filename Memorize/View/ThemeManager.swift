@@ -19,54 +19,58 @@ struct ThemeManager: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(store.themes) { theme in
-                    VStack(alignment: .leading, spacing: Constants.verticalSpacing) {
-                        HStack {
-                            colorSample(for: theme)
-                            Text(theme.name)
-                            Spacer() // 1
-                        }
-                        Text("Number of card pairs: \(theme.emojis.count)")
-                        Text("Number of card pairs to be used: \(theme.cardPairCount ?? theme.emojis.count)")
-                        emojiSamples(for: theme)
+                ForEach(store.themes) { row(for: $0) }
+                    .onDelete { indexSet in
+                        store.themes.remove(atOffsets: indexSet)
                     }
-                    .contentShape(Rectangle()) // 2 - 1 & 2 needed to make the whole row tapable
-                    .gesture(editMode == .active ? tap(for: theme) : nil)
-                    .sheet(item: $themeToEdit) { themeToEdit in
-                        ThemeEditor(theme: $store.themes[themeToEdit])
+                    .onMove { indexSet, newOffset in
+                        store.themes.move(fromOffsets: indexSet, toOffset: newOffset)
                     }
-                }
-                .onDelete { indexSet in
-                    store.themes.remove(atOffsets: indexSet)
-                }
-                .onMove { indexSet, newOffset in
-                    store.themes.move(fromOffsets: indexSet, toOffset: newOffset)
-                }
             }
             .navigationTitle("Themes")
             .toolbar {
+                ToolbarItem { EditButton() }
+                ToolbarItem { addButton }
                 ToolbarItem(placement: .navigationBarLeading) {
                     if presentationMode.wrappedValue.isPresented,
-                        UIDevice.current.userInterfaceIdiom != .pad {
+                       UIDevice.current.userInterfaceIdiom != .pad {
                         Button("Close") {
                             presentationMode.wrappedValue.dismiss()
                         }
                     }
                 }
-                ToolbarItem { EditButton() }
-                ToolbarItem {
-                    Button {
-                        store.insertTheme(named: "New Theme", at: 0)
-                        themeToAdd = store.theme(at: 0)
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                    .popover(item: $themeToAdd, arrowEdge: .bottom) { newTheme in
-                        ThemeEditor(theme: $store.themes[newTheme])
-                    }
-                }
             }
             .environment(\.editMode, $editMode)
+        }
+    }
+    
+    private var addButton: some View {
+        Button {
+            store.insertTheme(named: "New Theme", at: 0)
+            themeToAdd = store.theme(at: 0)
+        } label: {
+            Image(systemName: "plus")
+        }
+        .popover(item: $themeToAdd, arrowEdge: .bottom) { newTheme in
+            ThemeEditor(theme: $store.themes[newTheme])
+        }
+    }
+    
+    private func row(for theme: Theme) -> some View {
+        VStack(alignment: .leading, spacing: Constants.verticalSpacing) {
+            HStack {
+                colorSample(for: theme)
+                Text(theme.name)
+                Spacer() // 1
+            }
+            Text("Number of card pairs: \(theme.emojis.count)")
+            Text("Number of card pairs to be used: \(theme.cardPairCount ?? theme.emojis.count)")
+            emojiSamples(for: theme)
+        }
+        .contentShape(Rectangle()) // 2 - 1 & 2 needed to make the whole row tapable
+        .gesture(editMode == .active ? tap(for: theme) : nil)
+        .sheet(item: $themeToEdit) { themeToEdit in
+            ThemeEditor(theme: $store.themes[themeToEdit])
         }
     }
     

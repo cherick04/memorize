@@ -5,7 +5,7 @@
 //  Created by Erick Chacon on 10/11/22.
 //
 
-import SwiftUI
+import Foundation
 
 /// Struct that builds a Theme
 struct Theme: Identifiable, Hashable {
