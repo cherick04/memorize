@@ -12,6 +12,8 @@ struct ThemeManager: View {
     
     @Environment(\.presentationMode) private var presentationMode
     
+    @State private var themeToAdd: Theme?
+    
     var body: some View {
         NavigationView {
             List {
@@ -35,6 +37,17 @@ struct ThemeManager: View {
                         Button("Close") {
                             presentationMode.wrappedValue.dismiss()
                         }
+                    }
+                }
+                ToolbarItem {
+                    Button {
+                        store.insertTheme(named: "New Theme", at: 0)
+                        themeToAdd = store.theme(at: 0)
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                    .popover(item: $themeToAdd, arrowEdge: .bottom) { theme in
+                        ThemeEditor(theme: $store.themes[theme])
                     }
                 }
             }

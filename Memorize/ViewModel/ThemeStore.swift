@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// Struct that builds a Theme
-struct Theme: Identifiable {
+struct Theme: Identifiable, Hashable {
     var name: String
     var emojis: [String]
     var color: RGBA
@@ -30,7 +30,7 @@ struct Theme: Identifiable {
     // MARK: - Other
     
     /// Values for each property must be from 0 to 1.0
-    struct RGBA {
+    struct RGBA: Hashable {
         let red: Double
         let green: Double
         let blue: Double
@@ -87,7 +87,7 @@ class ThemeStore: ObservableObject {
     
     // MARK: - Intent(s)
     
-    func palette(at index: Int) -> Theme {
+    func theme(at index: Int) -> Theme {
         let safeIndex = min(max(index, 0), themes.count - 1)
         return themes[safeIndex]
     }
@@ -100,10 +100,15 @@ class ThemeStore: ObservableObject {
         return index % themes.count
     }
     
-    func insertTheme(named name: String, emojis: [String] = [], color: Theme.RGBA, cardPairCount: Int? = nil, at index: Int = 0) {
-        let unique = (themes.max(by: { $0.id < $1.id })?.id ?? 0) + 1
-        let theme = Theme(name: name, emojis: emojis, color: color, id: unique, cardPairCount: cardPairCount)
-        let safeIndex = min(max(index, 0), themes.count)
-        themes.insert(theme, at: safeIndex)
+    func insertTheme(
+        named name: String,
+        emojis: [String] = [],
+        color: Theme.RGBA = Theme.RGBA(red: 1, green: 1, blue: 1, alpha: 1),
+        cardPairCount: Int? = nil,
+        at index: Int = 0) {
+            let unique = (themes.max(by: { $0.id < $1.id })?.id ?? 0) + 1
+            let theme = Theme(name: name, emojis: emojis, color: color, id: unique, cardPairCount: cardPairCount)
+            let safeIndex = min(max(index, 0), themes.count)
+            themes.insert(theme, at: safeIndex)
     }
 }

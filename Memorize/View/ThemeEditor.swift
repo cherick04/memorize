@@ -98,6 +98,6 @@ struct ThemeEditor: View {
 
 struct ThemeEditor_Previews: PreviewProvider {
     static var previews: some View {
-        ThemeEditor(theme: .constant(ThemeStore(name: "Preview").palette(at: 0)))
+        ThemeEditor(theme: .constant(ThemeStore(name: "Preview").theme(at: 0)))
     }
 }
