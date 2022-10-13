@@ -25,6 +25,7 @@ struct ThemeManager: View {
                             Spacer()
                             Text("Card Count: \(theme.emojis.count)")
                         }
+                        numberOfCardPairs(for: theme)
                         emojiSamples(for: theme)
                     }
                 }
@@ -61,6 +62,15 @@ struct ThemeManager: View {
                 width: Constants.colorSampleLength,
                 height: Constants.colorSampleLength
             )
+    }
+    
+    private func numberOfCardPairs(for theme: Theme) -> some View {
+        var str = ""
+        if let cardPairCount = theme.cardPairCount {
+            str = "Number of card pairs to play: \(cardPairCount)"
+        } 
+        
+        return Text(str)
     }
     
     private func emojiSamples(for theme: Theme) -> some View {
