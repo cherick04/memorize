@@ -64,7 +64,7 @@ class ThemeStore: ObservableObject {
             )
             insertTheme(
                 named: "Animal Faces",
-                emojis: "🐶🐱🦊🐻🐼🐻‍❄️🐨🐯🦁🐷🐮🐸",
+                emojis: "🐶🐱🦊🐻🐼🐻‍❄️🐨🐯🦁🐷🐮🐸🐵🙈🙉🙊",
                 color: Theme.RGBA(red: 0.65, green: 0, blue: 1, alpha: 0.8)
             )
             insertTheme(
