@@ -10,11 +10,13 @@ import SwiftUI
 struct ThemeManager: View {
     @EnvironmentObject var store: ThemeStore
     
-    @Environment(\.presentationMode) private var presentationMode
-    
     @State private var themeToEdit: Theme?
     @State private var themeToAdd: Theme?
     @State private var editMode: EditMode = .inactive
+    
+    private var isIPad: Bool {
+        UIDevice.current.userInterfaceIdiom == .pad
+    }
     
     var body: some View {
         NavigationView {
@@ -27,18 +29,10 @@ struct ThemeManager: View {
                         store.themes.move(fromOffsets: indexSet, toOffset: newOffset)
                     }
             }
-            .navigationTitle("Themes")
+            .navigationTitle("Memorize")
             .toolbar {
                 ToolbarItem { EditButton() }
-                ToolbarItem { addButton }
-                ToolbarItem(placement: .navigationBarLeading) {
-                    if presentationMode.wrappedValue.isPresented,
-                       UIDevice.current.userInterfaceIdiom != .pad {
-                        Button("Close") {
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                    }
-                }
+                ToolbarItem(placement: .navigationBarLeading) { addButton }
             }
             .environment(\.editMode, $editMode)
         }
@@ -51,7 +45,7 @@ struct ThemeManager: View {
         } label: {
             Image(systemName: "plus")
         }
-        .popover(item: $themeToAdd, arrowEdge: .bottom) { newTheme in
+        .sheet(item: $themeToAdd) { newTheme in
             ThemeEditor(theme: $store.themes[newTheme])
         }
     }
@@ -59,8 +53,9 @@ struct ThemeManager: View {
     private func row(for theme: Theme) -> some View {
         VStack(alignment: .leading, spacing: Constants.verticalSpacing) {
             HStack {
-                colorSample(for: theme)
                 Text(theme.name)
+                    .font(.title2)
+                    .foregroundColor(theme.rgbaColor.color)
                 Spacer() // 1
             }
             Text("Number of card pairs: \(theme.emojis.count)")
@@ -74,25 +69,18 @@ struct ThemeManager: View {
         }
     }
     
-    private func colorSample(for theme: Theme) -> some View {
-        Rectangle()
-            .foregroundColor(theme.rgbaColor.color)
-            .frame(
-                width: Constants.colorSampleLength,
-                height: Constants.colorSampleLength
-            )
-    }
-    
     private func emojiSamples(for theme: Theme) -> some View {
-        let emojis = theme.emojis.count <= Constants.maxEmojiSampleCount
+        let maxCount = isIPad ? Constants.maxEmojiCountForIpad : Constants.maxEmojiCountForIphone
+        let emojis = theme.emojis.count <= maxCount
         ? theme.emojis.map { $0 }
-        : Array<Character>(theme.emojis.map { $0 }[0..<Constants.maxEmojiSampleCount])
+        : Array<Character>(theme.emojis.map { $0 }[0..<maxCount])
         
         return HStack {
+            Text("Sample cards:")
             ForEach(emojis, id: \.self) { emoji in
                 Text(String(emoji))
             }
-            if theme.emojis.count > Constants.maxEmojiSampleCount {
+            if theme.emojis.count > maxCount {
                 Text("...")
             }
         }
@@ -106,7 +94,8 @@ struct ThemeManager: View {
     
     private struct Constants {
         static let colorSampleLength: CGFloat = 15
-        static let maxEmojiSampleCount = 8
+        static let maxEmojiCountForIpad = 12
+        static let maxEmojiCountForIphone = 6
         static let verticalSpacing: CGFloat = 5
     }
 }
