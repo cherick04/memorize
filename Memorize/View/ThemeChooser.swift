@@ -41,8 +41,8 @@ struct ThemeChooser: View {
                 ToolbarItem { EditButton() }
                 ToolbarItem(placement: .navigationBarLeading) { addButton }
             }
-            .environment(\.editMode, $editMode)
             .onAppear { loadPlayingGames() }
+            .environment(\.editMode, $editMode)
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
@@ -92,7 +92,7 @@ struct ThemeChooser: View {
         : Array<Character>(theme.emojis.map { $0 }[0..<maxCount])
         
         return HStack {
-            Text("Sample cards:")
+            Text(isIPad ? "Sample cards:" : "")
             ForEach(emojis, id: \.self) { emoji in
                 Text(String(emoji))
             }

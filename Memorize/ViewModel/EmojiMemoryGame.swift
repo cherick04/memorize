@@ -18,7 +18,7 @@ class EmojiMemoryGame: ObservableObject {
     
     /// Creates a new memory game if a theme exists
     private static func createMemoryGame(with theme: Theme) -> Game {
-        let emojis = theme.emojis
+        let emojis = theme.emojis.shuffled()
         let cardPairCount = theme.cardPairCount ?? emojis.count
         return Game(numberOfCardPairs: cardPairCount) { index in String(emojis[index]) }
     }

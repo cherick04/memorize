@@ -16,14 +16,36 @@ struct ThemeEditor: View {
     
     // TODO: - Add a submit and cancel button
     var body: some View {
-        Form {
-            nameSection
-            cardPairSection
-            colorSection
-            addEmojiSection
-            removeEmojiSection
+        NavigationView {
+            Form {
+                nameSection
+                cardPairSection
+                colorSection
+                addEmojiSection
+                removeEmojiSection
+            }
+            .navigationTitle("Edit Mode")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem { submitButton }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    cancelButton
+                }
+            }
         }
-        .navigationTitle("Edit Mode")
+        .interactiveDismissDisabled()
+    }
+    
+    private var submitButton: some View {
+        Button("Submit") {
+            
+        }
+    }
+    
+    private var cancelButton: some View {
+        Button("Cancel") {
+            presentationMode.wrappedValue.dismiss()
+        }
     }
     
     private var nameSection: some View {

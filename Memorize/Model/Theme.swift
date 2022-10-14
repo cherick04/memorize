@@ -8,7 +8,7 @@
 import Foundation
 
 /// Struct that builds a Theme
-struct Theme: Identifiable, Hashable, Codable {
+struct Theme: Identifiable, Hashable, Codable, Equatable {
     var name: String
     var emojis: String
     var rgbaColor: RGBAColor
