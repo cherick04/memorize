@@ -26,12 +26,18 @@ class EmojiMemoryGame: ObservableObject {
     
     init(theme: Theme) {
         self.theme = theme
-        self.model = EmojiMemoryGame.createMemoryGame(with: theme)
+        if let url = Autosave(for: theme.id).url, let autosavedMemoryGame = try? MemoryGame<String>(url: url) {
+            model = autosavedMemoryGame
+        } else {
+            self.model = EmojiMemoryGame.createMemoryGame(with: theme)
+        }
     }
     
     // MARK: - Properties
     
-    @Published private(set) var model: Game
+    @Published private(set) var model: Game {
+        didSet { autosave() }
+    }
     
     var theme: Theme {
         didSet { newGame(for: theme) }
@@ -59,6 +65,43 @@ class EmojiMemoryGame: ObservableObject {
         }
     }
 
+    // MARK: - Autosave
+
+    private struct Autosave {
+        let filename = "Autosave.emojiMemoryGame"
+        let id: String
+        
+        var url: URL? {
+            let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+            return documentDirectory?.appendingPathComponent(filename+id)
+        }
+        
+        init(for id: Int) {
+            self.id = String(id)
+        }
+    }
+    
+    private func autosave() {
+        if let url = Autosave(for: theme.id).url {
+            save(to: url)
+        }
+    }
+    
+    private func save(to url: URL) {
+        let thisFunction = "\(String(describing: self)).\(#function)"
+        do {
+            let data: Data = try model.json()
+            print("\(thisFunction) json = \(String(data: data, encoding: .utf8) ?? "nil")")
+            try data.write(to: url)
+            print("\(thisFunction) success")
+        } catch let encodingError where encodingError is EncodingError {
+            print("\(thisFunction) couldn't encode MemoryGame as JSON because \(encodingError.localizedDescription)")
+        }
+        catch let error {
+            print("\(thisFunction) error: \(error.localizedDescription)")
+        }
+    }
+    
     // MARK: - Private
     
     func newGame(for theme: Theme) {

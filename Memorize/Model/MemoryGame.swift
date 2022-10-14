@@ -8,7 +8,7 @@
 import Foundation
 
 /// Model holding the basic functionality for a memory game
-struct MemoryGame<CardContent> where CardContent: Equatable {
+struct MemoryGame<CardContent>: Codable where CardContent: Equatable, CardContent: Codable {
     
     // MARK: - Properties
     
@@ -28,8 +28,18 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
     }
     
-    // MARK: - Initializer
+    // MARK: - Initializers
+    
     init() {}
+    
+    init(json: Data) throws {
+        self = try JSONDecoder().decode(MemoryGame.self, from: json)
+    }
+    
+    init(url: URL) throws {
+        let data = try Data(contentsOf: url)
+        self = try MemoryGame(json: data)
+    }
     
     init(numberOfCardPairs: Int, createCardContent: (Int) -> CardContent) {
         for pairIndex in 0..<numberOfCardPairs {
@@ -41,6 +51,10 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     }
     
     // MARK: - Methods
+    
+    func json() throws -> Data {
+        return try JSONEncoder().encode(self)
+    }
     
     /// Chooses card and flips it if the card is not faced up nor matched.
     /// If a card has been faced up before, checks if there is a match and updates the score accordingly.
@@ -102,7 +116,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     // MARK: - Other Types
     
     /// Model holding card information
-    struct Card: Identifiable {
+    struct Card: Identifiable, Codable {
         var isFaceUp = false
         var isMatched = false
         var content: CardContent
