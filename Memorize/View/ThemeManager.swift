@@ -36,6 +36,7 @@ struct ThemeManager: View {
             }
             .environment(\.editMode, $editMode)
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     private var addButton: some View {
