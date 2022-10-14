@@ -12,25 +12,21 @@ struct EmojiMemoryGameView: View {
     
     var body: some View {
         VStack {
-            Text(game.theme.name)
-                .font(.system(size: 34, weight: .black , design: .rounded))
-                .padding(.bottom, -10.0)
             header
             AspectVGrid(items: game.cards, aspectRatio: 2/3) { cardView(for: $0) }
-            newGameButton
         }
+        .navigationTitle(game.theme.name)
         .padding(.horizontal)
+        .toolbar { ToolbarItem { newGameButton } }
     }
     
     /// Returns the theme name and the score
     private var header: some View {
         HStack {
-            Text(game.theme.name)
-            Spacer()
             Text("Score:")
             Text(game.score).foregroundColor(game.scoreColor)
         }
-        .font(.system(size: 25, weight: .semibold))
+        .font(.title2)
     }
     
     /// Returns a New Game button
