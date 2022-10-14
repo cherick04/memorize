@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ThemeEditor: View {
+    @Environment(\.presentationMode) var presentationMode
+    
     @Binding var theme: Theme
 
     @State private var isCustomCardCountOn = false
@@ -29,6 +31,16 @@ struct ThemeEditor: View {
             }
             .navigationTitle("Edit Mode")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem {
+                    if UIDevice.current.userInterfaceIdiom != .pad {
+                        Button("Close") {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    }
+                    
+                }
+            }
         }
         .interactiveDismissDisabled(isInvalid)
     }
