@@ -73,7 +73,7 @@ class ThemeStore: ObservableObject {
             rgbaColor: RGBAColor(red: 0.65, green: 0, blue: 1, alpha: 0.8)
         )
         insertTheme(
-            named: "Animal",
+            named: "Animals",
             emojis: "🐅🐆🦓🦍🐘🦛🦏🦬🐃🐂🐄",
             rgbaColor: RGBAColor(red: 1, green: 0, blue: 0.65, alpha: 0.8)
         )

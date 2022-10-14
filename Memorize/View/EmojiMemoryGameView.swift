@@ -10,12 +10,17 @@ import SwiftUI
 struct EmojiMemoryGameView: View {
     @ObservedObject var game: EmojiMemoryGame
     
+    private var isIPad: Bool {
+        UIDevice.current.userInterfaceIdiom == .pad
+    }
+    
     var body: some View {
         VStack {
             header
             AspectVGrid(items: game.cards, aspectRatio: 2/3) { cardView(for: $0) }
         }
         .navigationTitle(game.theme.name)
+        .navigationBarTitleDisplayMode(isIPad ? .large : .inline)
         .padding(.horizontal)
         .toolbar { ToolbarItem { newGameButton } }
     }
