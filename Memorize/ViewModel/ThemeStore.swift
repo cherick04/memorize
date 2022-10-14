@@ -103,7 +103,7 @@ class ThemeStore: ObservableObject {
     func insertTheme(
         named name: String,
         emojis: String = "",
-        rgbaColor: RGBAColor = RGBAColor(red: 1, green: 1, blue: 1, alpha: 1),
+        rgbaColor: RGBAColor = RGBAColor(red: 0, green: 0, blue: 0, alpha: 0.8),
         cardPairCount: Int? = nil,
         at index: Int = 0) {
             let unique = (themes.max(by: { $0.id < $1.id })?.id ?? 0) + 1
