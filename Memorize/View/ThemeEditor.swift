@@ -11,7 +11,7 @@ struct ThemeEditor: View {
     @Binding var theme: Theme
 
     @State private var isCustomCardCountOn = false
-    @State private var cardCount = Constants.cardCountMin
+    @State private var cardCount = 0
     @State private var emojisToAdd = ""
     
     // TODO: - Add a submit and cancel button
@@ -48,6 +48,10 @@ struct ThemeEditor: View {
                     }
                 }
             )
+            .onAppear {
+                isCustomCardCountOn = theme.cardPairCount != nil
+                cardCount = theme.cardPairCount ?? theme.emojis.count
+            }
             .onChange(of: cardCount) { cardCount in
                 if isCustomCardCountOn {
                     theme.cardPairCount = cardCount
