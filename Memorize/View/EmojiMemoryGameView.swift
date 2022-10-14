@@ -12,15 +12,9 @@ struct EmojiMemoryGameView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                ThemeChooser()
-                    .imageScale(.large)
-                Spacer()
-                Text("MEMORIZE!")
-                    .font(.system(size: 34, weight: .black , design: .rounded))
-                    .padding(.bottom, -10.0)
-                Spacer()
-            }
+            Text(game.theme.name)
+                .font(.system(size: 34, weight: .black , design: .rounded))
+                .padding(.bottom, -10.0)
             header
             AspectVGrid(items: game.cards, aspectRatio: 2/3) { cardView(for: $0) }
             newGameButton
@@ -31,12 +25,10 @@ struct EmojiMemoryGameView: View {
     /// Returns the theme name and the score
     private var header: some View {
         HStack {
-            if game.theme != nil {
-                Text(game.themeName)
-                Spacer()
-                Text("Score:")
-                Text(game.score).foregroundColor(game.scoreColor)
-            }
+            Text(game.theme.name)
+            Spacer()
+            Text("Score:")
+            Text(game.score).foregroundColor(game.scoreColor)
         }
         .font(.system(size: 25, weight: .semibold))
     }
@@ -54,7 +46,7 @@ struct EmojiMemoryGameView: View {
             Rectangle().opacity(0)
         } else {
             CardView(card: card)
-                .foregroundColor(game.theme?.rgbaColor.color)
+                .foregroundColor(game.theme.rgbaColor.color)
                 .padding(3)
                 .onTapGesture {
                     game.choose(card)
@@ -65,7 +57,8 @@ struct EmojiMemoryGameView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let game = EmojiMemoryGame()
+        let theme = Theme(name: "Preview", emojis: "🐶🐱🐭", rgbaColor: RGBAColor(color: .red), id: 1)
+        let game = EmojiMemoryGame(theme: theme)
         EmojiMemoryGameView(game: game)
     }
 }

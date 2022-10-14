@@ -14,20 +14,27 @@ class EmojiMemoryGame: ObservableObject {
     typealias Game = MemoryGame<String>
     typealias Card = Game.Card
     
+    // MARK: - Static
+    
+    /// Creates a new memory game if a theme exists
+    private static func createMemoryGame(with theme: Theme) -> Game {
+        let data = theme.emojis
+        return Game(numberOfCardPairs: data.count) { index in String(data[index]) }
+    }
+    
     // MARK: - Initializer
     
-    init() {
-        model = Game()
+    init(theme: Theme) {
+        self.theme = theme
+        self.model = EmojiMemoryGame.createMemoryGame(with: theme)
     }
     
     // MARK: - Properties
     
     @Published private(set) var model: Game
     
-    var theme: Theme? {
-        didSet {
-            createMemoryGame()
-        }
+    var theme: Theme {
+        didSet { newGame(for: theme) }
     }
     
     /// Array of all cards to be used in game
@@ -51,19 +58,11 @@ class EmojiMemoryGame: ObservableObject {
             return .black
         }
     }
-    
-    var themeName: String {
-        theme?.name ?? ""
-    }
-    
+
     // MARK: - Private
     
-    /// Creates a new memory game if a theme exists
-    private func createMemoryGame() {
-        guard let theme = theme else { return }
-        
-        let data = theme.emojis
-        model = Game(numberOfCardPairs: data.count) { index in String(data[index]) }
+    func newGame(for theme: Theme) {
+        model = EmojiMemoryGame.createMemoryGame(with: theme)
     }
     
     // MARK: - Intent(s)
@@ -73,6 +72,6 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     func newGame() {
-        createMemoryGame()
+        newGame(for: theme)
     }
 }
