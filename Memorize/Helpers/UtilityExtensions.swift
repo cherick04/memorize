@@ -32,6 +32,10 @@ extension Color {
 }
 
 extension RGBAColor {
+    init(color: Color) {
+        self = color.rgbaColor
+    }
+    
     var color: Color {
         get {
             Color(
