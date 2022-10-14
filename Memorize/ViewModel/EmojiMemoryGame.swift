@@ -18,15 +18,17 @@ class EmojiMemoryGame: ObservableObject {
     
     /// Creates a new memory game if a theme exists
     private static func createMemoryGame(with theme: Theme) -> Game {
-        let data = theme.emojis
-        return Game(numberOfCardPairs: data.count) { index in String(data[index]) }
+        let emojis = theme.emojis
+        let cardPairCount = theme.cardPairCount ?? emojis.count
+        return Game(numberOfCardPairs: cardPairCount) { index in String(emojis[index]) }
     }
     
     // MARK: - Initializer
     
     init(theme: Theme) {
         self.theme = theme
-        if let url = Autosave(for: theme.id).url, let autosavedMemoryGame = try? MemoryGame<String>(url: url) {
+        if let url = Autosave(for: theme.id).url,
+           let autosavedMemoryGame = try? MemoryGame<String>(url: url) {
             model = autosavedMemoryGame
         } else {
             self.model = EmojiMemoryGame.createMemoryGame(with: theme)
