@@ -13,6 +13,7 @@ struct ThemeManager: View {
     @State private var themeToEdit: Theme?
     @State private var themeToAdd: Theme?
     @State private var editMode: EditMode = .inactive
+    @State private var playingGames: [Int: EmojiMemoryGame] = [:]
     
     private var isIPad: Bool {
         UIDevice.current.userInterfaceIdiom == .pad
@@ -21,13 +22,19 @@ struct ThemeManager: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(store.themes) { row(for: $0) }
-                    .onDelete { indexSet in
-                        store.themes.remove(atOffsets: indexSet)
+                ForEach(store.themes) { theme in
+                    if let game = playingGames[theme.id] {
+                        NavigationLink(destination: EmojiMemoryGameView(game: game)) {
+                            row(for: theme)
+                        }
                     }
-                    .onMove { indexSet, newOffset in
-                        store.themes.move(fromOffsets: indexSet, toOffset: newOffset)
-                    }
+                }
+                .onDelete { indexSet in
+                    store.themes.remove(atOffsets: indexSet)
+                }
+                .onMove { indexSet, newOffset in
+                    store.themes.move(fromOffsets: indexSet, toOffset: newOffset)
+                }
             }
             .navigationTitle("Memorize")
             .toolbar {
@@ -35,8 +42,15 @@ struct ThemeManager: View {
                 ToolbarItem(placement: .navigationBarLeading) { addButton }
             }
             .environment(\.editMode, $editMode)
+            .onAppear { loadPlayingGames() }
         }
         .navigationViewStyle(StackNavigationViewStyle())
+    }
+    
+    private func loadPlayingGames() {
+        store.themes.forEach { theme in
+            playingGames[theme.id] = EmojiMemoryGame(theme: theme)
+        }
     }
     
     private var addButton: some View {
