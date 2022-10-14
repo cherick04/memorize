@@ -57,6 +57,7 @@ struct ThemeChooser: View {
         Button {
             store.insertTheme(named: "New Theme", at: 0)
             themeToAdd = store.theme(at: 0)
+            loadPlayingGames()
         } label: {
             Image(systemName: "plus")
         }
