@@ -28,45 +28,8 @@ class ThemeStore: ObservableObject {
     
     init(name: String) {
         self.name = name
-        
         restoreFromUserDefaults()
-        if themes.isEmpty {
-            insertTheme(
-                named: "Cars",
-                emojis: "🚗🚕🚙🏎🚓🛺🚘🚖🚔",
-                rgbaColor: RGBAColor(red: 1, green: 0, blue: 0, alpha: 0.8)
-            )
-            insertTheme(
-                named: "Big Cars",
-                emojis: "🚚🚛🚒🚐🚜🚑🛻🚍🚌🚎",
-                rgbaColor: RGBAColor(red: 1, green: 0.5, blue: 0, alpha: 0.8)
-            )
-            insertTheme(
-                named: "Trains",
-                emojis: "🚞🚝🚄🚅🚈🚂🚆🚇🚊🚉",
-                rgbaColor: RGBAColor(red: 1, green: 1, blue: 0, alpha: 0.8)
-            )
-            insertTheme(
-                named: "Animal Faces",
-                emojis: "🐶🐱🦊🐻🐼🐻‍❄️🐨🐯🦁🐷🐮🐸🐵🙈🙉🙊",
-                rgbaColor: RGBAColor(red: 0.65, green: 0, blue: 1, alpha: 0.8)
-            )
-            insertTheme(
-                named: "Animal",
-                emojis: "🐅🐆🦓🦍🐘🦛🦏🦬🐃🐂🐄",
-                rgbaColor: RGBAColor(red: 1, green: 0, blue: 0.65, alpha: 0.8)
-            )
-            insertTheme(
-                named: "S.American Flags",
-                emojis: "🇦🇷🇧🇷🇧🇴🇨🇱🇺🇾🇵🇾🇪🇨🇨🇴🇻🇪🇵🇪",
-                rgbaColor: RGBAColor(red: 0, green: 1, blue: 0, alpha: 0.8)
-            )
-            insertTheme(
-                named: "Asian Flags",
-                emojis: "🇨🇳🇷🇺🇯🇵🇰🇵🇰🇷🇻🇳🇹🇭🇹🇼🇵🇭🇲🇳🇰🇭🇸🇬",
-                rgbaColor: RGBAColor(red: 0, green: 0, blue: 1, alpha: 0.8)
-            )
-        }
+        if themes.isEmpty { loadDefaultThemes() }
     }
     
     // MARK: - UserDefaults
@@ -85,6 +48,47 @@ class ThemeStore: ObservableObject {
             themes = decodedThemes
         }
     }
+    
+    // MARK: - Private
+    
+    private func loadDefaultThemes() {
+        insertTheme(
+            named: "Cars",
+            emojis: "🚗🚕🚙🏎🚓🛺🚘🚖🚔",
+            rgbaColor: RGBAColor(red: 1, green: 0, blue: 0, alpha: 0.8)
+        )
+        insertTheme(
+            named: "Big Cars",
+            emojis: "🚚🚛🚒🚐🚜🚑🛻🚍🚌🚎",
+            rgbaColor: RGBAColor(red: 1, green: 0.5, blue: 0, alpha: 0.8)
+        )
+        insertTheme(
+            named: "Trains",
+            emojis: "🚞🚝🚄🚅🚈🚂🚆🚇🚊🚉",
+            rgbaColor: RGBAColor(red: 1, green: 1, blue: 0, alpha: 0.8)
+        )
+        insertTheme(
+            named: "Animal Faces",
+            emojis: "🐶🐱🦊🐻🐼🐻‍❄️🐨🐯🦁🐷🐮🐸🐵🙈🙉🙊",
+            rgbaColor: RGBAColor(red: 0.65, green: 0, blue: 1, alpha: 0.8)
+        )
+        insertTheme(
+            named: "Animal",
+            emojis: "🐅🐆🦓🦍🐘🦛🦏🦬🐃🐂🐄",
+            rgbaColor: RGBAColor(red: 1, green: 0, blue: 0.65, alpha: 0.8)
+        )
+        insertTheme(
+            named: "S.American Flags",
+            emojis: "🇦🇷🇧🇷🇧🇴🇨🇱🇺🇾🇵🇾🇪🇨🇨🇴🇻🇪🇵🇪",
+            rgbaColor: RGBAColor(red: 0, green: 1, blue: 0, alpha: 0.8)
+        )
+        insertTheme(
+            named: "Asian Flags",
+            emojis: "🇨🇳🇷🇺🇯🇵🇰🇵🇰🇷🇻🇳🇹🇭🇹🇼🇵🇭🇲🇳🇰🇭🇸🇬",
+            rgbaColor: RGBAColor(red: 0, green: 0, blue: 1, alpha: 0.8)
+        )
+    }
+    
     // MARK: - Intent(s)
     
     func theme(at index: Int) -> Theme {
