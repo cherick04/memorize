@@ -14,7 +14,10 @@ struct ThemeEditor: View {
     @State private var cardCount = 0
     @State private var emojisToAdd = ""
     
-    // TODO: - Add a submit and cancel button
+    private var isInvalid: Bool {
+        theme.emojis.count < Constants.cardCountMin
+    }
+    
     var body: some View {
         NavigationView {
             Form {
@@ -26,26 +29,8 @@ struct ThemeEditor: View {
             }
             .navigationTitle("Edit Mode")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem { submitButton }
-                ToolbarItem(placement: .navigationBarLeading) {
-                    cancelButton
-                }
-            }
         }
-        .interactiveDismissDisabled()
-    }
-    
-    private var submitButton: some View {
-        Button("Submit") {
-            
-        }
-    }
-    
-    private var cancelButton: some View {
-        Button("Cancel") {
-            presentationMode.wrappedValue.dismiss()
-        }
+        .interactiveDismissDisabled(isInvalid)
     }
     
     private var nameSection: some View {
@@ -90,11 +75,16 @@ struct ThemeEditor: View {
     }
 
     private var addEmojiSection: some View {
-        Section("Add Emojis") {
+        Section {
             TextField("", text: $emojisToAdd)
                 .onChange(of: emojisToAdd) { emojis in
                     addEmojis(emojis)
                 }
+        } header: {
+            Text("Add Emojis")
+        } footer: {
+            Text(isInvalid ? "Need at least 2 emojis" : "")
+                .foregroundColor(.red)
         }
     }
     
