@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreGraphics
 
 struct Pie: Shape {
     var startAngle: Angle
