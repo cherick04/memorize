@@ -32,17 +32,13 @@ struct ThemeEditor: View {
             .navigationTitle("Edit Mode")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem {
-                    if UIDevice.current.userInterfaceIdiom != .pad {
-                        Button("Close") {
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                    }
-                    
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { handleDismiss() }
+                        .disabled(isInvalid)
                 }
             }
         }
-        .interactiveDismissDisabled(isInvalid)
+        .interactiveDismissDisabled(true)
     }
     
     private var nameSection: some View {
@@ -128,6 +124,10 @@ struct ThemeEditor: View {
     }
     
     // MARK: - Helpers
+    
+    private func handleDismiss() {
+        presentationMode.wrappedValue.dismiss()
+    }
     
     private func updateCardCount() {
         if !isCustomCardCountOn {
