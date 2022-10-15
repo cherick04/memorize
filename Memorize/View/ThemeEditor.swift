@@ -11,6 +11,7 @@ struct ThemeEditor: View {
     @Environment(\.presentationMode) var presentationMode
     
     @Binding var theme: Theme
+    let completion: (Theme) -> Void
 
     @State private var isCustomCardCountOn = false
     @State private var cardCount = 0
@@ -126,6 +127,7 @@ struct ThemeEditor: View {
     // MARK: - Helpers
     
     private func handleDismiss() {
+        completion(theme)
         presentationMode.wrappedValue.dismiss()
     }
     
@@ -143,6 +145,6 @@ struct ThemeEditor: View {
 
 struct ThemeEditor_Previews: PreviewProvider {
     static var previews: some View {
-        ThemeEditor(theme: .constant(ThemeStore(name: "Preview").theme(at: 0)))
+        ThemeEditor(theme: .constant(ThemeStore(name: "Preview").theme(at: 0))) { _ in }
     }
 }

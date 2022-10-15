@@ -62,7 +62,9 @@ struct ThemeChooser: View {
             Image(systemName: "plus")
         }
         .sheet(item: $themeToAdd) { newTheme in
-            ThemeEditor(theme: $store.themes[newTheme])
+            ThemeEditor(theme: $store.themes[newTheme]) { newTheme in
+                playingGames[newTheme.id] = EmojiMemoryGame(theme: newTheme)
+            }
         }
     }
     
@@ -81,7 +83,12 @@ struct ThemeChooser: View {
         .contentShape(Rectangle()) // 2 - 1 & 2 needed to make the whole row tapable
         .gesture(editMode == .active ? tap(for: theme) : nil)
         .sheet(item: $themeToEdit) { themeToEdit in
-            ThemeEditor(theme: $store.themes[themeToEdit])
+            ThemeEditor(theme: $store.themes[themeToEdit]) { editedTheme in
+                if let game = playingGames[editedTheme.id],
+                   game.theme != editedTheme {
+                    game.theme = editedTheme
+                }
+            }
         }
     }
     
