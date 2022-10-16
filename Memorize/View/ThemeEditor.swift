@@ -85,7 +85,7 @@ struct ThemeEditor: View {
 
     private var addEmojiSection: some View {
         Section {
-            TextField("", text: $emojisToAdd)
+            EmojiTextField(text: $emojisToAdd, placeholder: "")
                 .onChange(of: emojisToAdd) { emojis in
                     addEmojis(emojis)
                 }
